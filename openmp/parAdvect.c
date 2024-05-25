@@ -255,10 +255,10 @@ void run_parallel_omp_advection_1D_decomposition(int reps, double *u, int ldu) {
 
 // ... using 2D parallelization
 void run_parallel_omp_advection_2D_decomposition(int reps, double *u, int ldu) {
-  int i, j;
-  int r, ldv = N+2;
+  int ldv = N+2;
   double *v = calloc(ldv*(M+2), sizeof(double)); assert(v != NULL);
   
+  /* // Original code
   for (r = 0; r < reps; r++) {         
     for (j = 1; j < N+1; j++) { //top and bottom halo
       u[j] = u[M * ldu + j];
@@ -269,11 +269,92 @@ void run_parallel_omp_advection_2D_decomposition(int reps, double *u, int ldu) {
       u[i * ldu + N + 1] = u[i * ldu + 1];
     }
 
+    // v := u
     update_advection_field(M, N, &u[ldu + 1], ldu, &v[ldv + 1], ldv);
 
+    // u := v
     copy_field(M, N, &v[ldv + 1], ldv, &u[ldu + 1], ldu);
   } //for (r...)
   free(v);
+  */
+
+
+
+  #pragma omp parallel 
+  {
+    int thread_id = omp_get_thread_num();
+
+    // number of rows for each thread except last one
+    int M_size = M / P;
+
+    // number of cols for each thread except last one 
+    int N_size = N / Q;
+
+    // Compute the 2D thread indices
+    int P0 = thread_id / Q;
+    int Q0 = thread_id % Q;
+
+    // Compute the starting row & col index of each thread, as well as 
+    // their row length and col length.
+    int M_start = P0 * M_size + 1;
+    int M_len = P0 < P - 1 ? M_size : M - M_start + 1;
+    //int M_end = M_start + M_len - 1;
+
+    int N_start = Q0 * N_size + 1;
+    int N_len = Q0 < Q - 1 ? N_size : N - N_start + 1;
+    //int N_end = N_start + N_len - 1;
+
+
+    //printf("Thread id: %d. (P0, Q0): (%d, %d)\n", thread_id, P0, Q0);
+    //printf("M_len, N_len: (%d,%d)\n", M_len, N_len);
+    //printf("M_start, N_start: (%d,%d). M_end, N_end: (%d, %d)\n\n", M_start, N_start, M_end, N_end);
+    
+
+    for(int r = 0; r < reps; r++){
+      #pragma omp single
+      {
+        // update top bottom halo, index: [M_start][N_start] - [M_start][N_end]
+        #pragma omp task
+        {
+          for (int j = 1; j < N+1; j++) {
+            u[j] = u[M * ldu + j];
+            u[(M + 1) * ldu + j] = u[ldu + j];
+            }
+        }
+
+        // update left right halo
+        #pragma omp task
+        {
+          for (int i = 0; i < M+2; i++) {
+            u[i * ldu] = u[i * ldu + N];
+            u[i * ldu + N + 1] = u[i * ldu + 1];
+            }
+        }
+        
+
+      }
+      
+      
+      // update advection
+      #pragma omp barrier
+      update_advection_field(M_len, N_len, &u[M_start * ldu + N_start], ldu, &v[M_start * ldu + N_start], ldv);
+
+      // copy back
+      #pragma omp barrier
+      copy_field(M_len, N_len, &v[M_start * ldu + N_start], ldv, &u[M_start * ldu + N_start], ldu);
+      #pragma omp barrier
+    }
+
+  }
+
+  free(v);
+  
+
+
+
+
+
+
 } //run_parallel_omp_advection_2D_decomposition()
 
 
