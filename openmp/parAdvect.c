@@ -280,7 +280,7 @@ void run_parallel_omp_advection_2D_decomposition(int reps, double *u, int ldu) {
 
 
 
-  #pragma omp parallel 
+  #pragma omp parallel
   {
     int thread_id = omp_get_thread_num();
 
@@ -311,29 +311,40 @@ void run_parallel_omp_advection_2D_decomposition(int reps, double *u, int ldu) {
     
 
     for(int r = 0; r < reps; r++){
+      
       #pragma omp single
-      {
+      { 
+        
         // update top bottom halo, index: [M_start][N_start] - [M_start][N_end]
         #pragma omp task
         {
-          for (int j = 1; j < N+1; j++) {
+          for (int j = 1; j <= N; j++) {
             u[j] = u[M * ldu + j];
             u[(M + 1) * ldu + j] = u[ldu + j];
             }
         }
 
+
         // update left right halo
         #pragma omp task
         {
-          for (int i = 0; i < M+2; i++) {
+          for (int i = 1; i <= M; i++) {
             u[i * ldu] = u[i * ldu + N];
             u[i * ldu + N + 1] = u[i * ldu + 1];
             }
         }
+
+        // update 4 corners
+        #pragma omp task
+        {
+          u[0] = u[M * ldu + N];
+          u[(M+1) * ldu] = u[ldu + N];
+          u[N+1] = u[M * ldu + 1];
+          u[(M+1) * ldu + N + 1] = u[ldu + 1];
+        }
         
 
-      }
-      
+      } 
       
       // update advection
       #pragma omp barrier

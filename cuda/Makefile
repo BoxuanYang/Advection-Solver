@@ -11,6 +11,9 @@ all: $(PROG)
 
 %: %.o $(OBJS)
 	nvcc -o $* $*.o $(OBJS) -lm
+
+
+
 %.o: %.cu $(HDRS)
 	nvcc $(CCFLAGS) -c $*.cu
 clean:
