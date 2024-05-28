@@ -69,6 +69,8 @@ void omp_update_advection_field_1D_decomposition(double *u, int ldu, double *v, 
   calculate_and_update_coefficients(Ux, &cim1, &ci0, &cip1); 
   calculate_and_update_coefficients(Uy, &cjm1, &cj0, &cjp1);
 
+  //printf("1D!!!\n");
+
   /*
   We need to iterate all the combinations of:
   1. Parallize out/inner loop

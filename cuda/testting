@@ -1,2 +1,4 @@
 correct:
 ./testAdvect -h 10000 10000
+
+./testAdvect -g Gx,Gy -b Bx,By M N

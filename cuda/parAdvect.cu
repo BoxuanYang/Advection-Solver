@@ -4,6 +4,7 @@
 #include <stdlib.h>
 #include <assert.h>
 #include "serAdvect.h" // advection parameters
+#include <cuda_runtime.h>
 
 static int M, N, Gx, Gy, Bx, By; // local store of problem parameters
 static int verbosity;
@@ -104,6 +105,7 @@ void update_left_right_halo_kernel(int M, int N, double *u, int ldu){
 __global__ 
 void update_advection_kernel(int M, int N, double *u, int ldu, double *v, int ldv, double Ux, double Uy){
   // TODO
+  //printf("FUCK\n");
   int x_thread_num = gridDim.x * blockDim.x;
   int y_thread_num = gridDim.y * blockDim.y;
 
@@ -122,10 +124,106 @@ void update_advection_kernel(int M, int N, double *u, int ldu, double *v, int ld
 
  
   my_update_advection_field(M_len, N_len, &u[M_start * ldu + N_start], ldu, &v[M_start * ldu + N_start], ldv, Ux, Uy);
+}
 
+__global__
+void update_advection_kernel_optimized(int M, int N, double *u, int ldu, double *v, int ldv, double Ux, double Uy){
+  // TODO
+  printf("FUCK\n");
 
+  double cim1, ci0, cip1;
+  double cjm1, cj0, cjp1;
+  calculate_and_update_coefficients(Ux, &cim1, &ci0, &cip1);
+  calculate_and_update_coefficients(Uy, &cjm1, &cj0, &cjp1);
 
+  int Gx = gridDim.x;
+  int Gy = gridDim.y;
+  int Bx = blockDim.x;
+  int By = blockDim.y;
 
+  //int x_thread_num = gridDim.x * blockDim.x;
+  //int y_thread_num = gridDim.y * blockDim.y;
+
+ // int thread_x_index = blockIdx.x * Bx + threadIdx.x;
+  //int thread_y_index = blockIdx.y * By + threadIdx.y;
+
+  
+
+  // Compute the size of the submatrix that the block need to work on in M dimension, halo excluded
+  // Also, compute the starting index of the submatrix in M dimension in the u matrix
+  int block_size_M = (M + Gx - 1) / Gx;
+  int block_M_start = blockIdx.x * block_size_M + 1;
+  block_size_M = (blockIdx.x < Gx - 1) ? block_size_M : M % block_size_M;
+
+  // Compute the size of the submatrix that the block need to work on in N dimension, halo excluded
+  // Also, compute the starting index of the submatrix in N dimension in the u matrix
+  int block_size_N = (N + Gy - 1) / Gy;
+  int block_N_start = blockIdx.y * block_size_N + 1;
+  block_size_N = (blockIdx.y < Gy - 1) ? block_size_N : N % block_size_N; 
+
+  // Compute the size of the submatrix that the thread need to work on in M dimension, halo excluded
+  // Also, compute the starting index of the submatrix in M dimension in the u matrix
+  int thread_size_M = (block_size_M + Bx - 1) / Bx;
+  // starting index of the thread in u equals block_M_start + offset
+  int thread_M_start = block_M_start + threadIdx.x * thread_size_M; 
+  thread_size_M = (threadIdx.x < Bx - 1) ? thread_size_M : block_size_M % thread_size_M;
+
+  // Compute the size of the submatrix that the thread need to work on in N dimension, halo excluded
+  // Also, compute the starting index of the submatrix in M dimension in the u matrix
+  int thread_size_N = (block_size_N + By - 1) / By;
+  // starting index of the thread in u equals block_N_start + offset
+  int thread_N_start = block_N_start + threadIdx.y * thread_size_N; 
+  thread_size_N = (threadIdx.y < By - 1) ? thread_size_N : block_size_N % thread_size_N;
+
+  printf("block_M_start: %d, block_N_start: %d\n", block_M_start, block_N_start);
+
+  /*
+  // sharedMem is a shared memory, where shraedMem[i][j] where i, j represents u[block_M_start + i][block_N_start + j]
+  extern __shared__ double sharedMem[];
+  
+
+  __syncthreads();
+
+  // perform advection update for a thread
+  for(int i = thread_M_start; i < thread_M_start + thread_size_M; i++){
+    int s_i = i - block_M_start;
+    for(int j = thread_N_start; j < thread_N_start + thread_size_N; j++){
+      int s_j = j - block_N_start;
+      sharedMem[s_i * block_size_N + s_j] = (cjm1 * u[(i - 1) * ldu + j - 1] + cj0 * u[(i - 1) * ldu + j] + cjp1 * u[(i - 1) * ldu + j + 1]);
+    }
+  }
+  __syncthreads();
+
+  for(int i = thread_M_start; i < thread_M_start + thread_size_M; i++){
+    int s_i = i - block_M_start;
+    for(int j = thread_N_start; j < thread_N_start + thread_size_N; j++){
+      int s_j = j - block_N_start;
+      v[i * ldv + j] = 
+          cim1 * sharedMem[(s_i - 1) * block_size_N + s_j] +
+          ci0 * sharedMem[s_i * block_size_N + s_j] +
+          cip1 * sharedMem[(s_i + 1) * block_size_N + s_j];
+    }
+  } */
+  
+
+  /*
+  for (int i=0; i < M; i++)
+    for (int j=0; j < N; j++)
+      v[i * ldv + j] =
+          cim1 * (cjm1 * u[(i - 1) * ldu + j - 1] + cj0 * u[(i - 1) * ldu + j] +
+                  cjp1 * u[(i - 1) * ldu + j + 1]) +
+          ci0 * (cjm1 * u[i * ldu + j - 1] + cj0 * u[i * ldu + j] +
+                 cjp1 * u[i * ldu + j + 1]) +
+          cip1 * (cjm1 * u[(i + 1) * ldu + j - 1] + cj0 * u[(i + 1) * ldu + j] +
+                  cjp1 * u[(i + 1) * ldu + j + 1]); */
+  
+  
+
+  //__syncthreads();
+
+  
+
+  
 
 }
 
@@ -149,6 +247,7 @@ __global__ void copy_field_kernel(int M, int N, double *u, int ldu, double *v, i
   // my_copy_field(int M, int N, double *v, int ldv, double *u, int ldu)
  
   my_copy_field(M_len, N_len, &v[M_start * ldv + N_start], ldv, &u[M_start * ldv + N_start], ldu);
+
 }
 
 
@@ -168,25 +267,25 @@ void run_parallel_cuda_advection_2D_decomposition(int reps, double *u, int ldu) 
   dim3 dimB(Bx, By);
 
   cudaMemcpy(d_u, u, ldv * (M + 2) * sizeof(double), cudaMemcpyHostToDevice);
-
-  dim3 haloG(1, 1);
-  dim3 haloB(1, 1);
   
   //printf("M: %d, N: %d\n", M, N);
   
 
   for(int r = 0; r < reps; r++){
     // update top/bottom halo
-    update_top_bot_halo_kernel<<<haloG, haloB>>>(M, N, d_u, ldu);
+    update_top_bot_halo_kernel<<<dimG, dimB>>>(M, N, d_u, ldu);
 
     // update left/right halo
-    update_left_right_halo_kernel<<<haloG, haloB>>>(M, N, d_u, ldu);
+    update_left_right_halo_kernel<<<dimG, dimB>>>(M, N, d_u, ldu);
 
     // update advcetion
-    update_advection_kernel<<<haloG, haloB>>>(M, N, d_u, ldu, d_v, ldv, Ux, Uy);
+    update_advection_kernel<<<dimG, dimB>>>(M, N, d_u, ldu, d_v, ldv, Ux, Uy);
 
     // copy back
-    copy_field_kernel<<<haloG, haloB>>>(M, N, d_u, ldu, d_v, ldv, Ux, Uy);
+    double *tmp = d_u;
+    d_u = d_v;
+    d_v = tmp;
+    //copy_field_kernel<<<dimG, dimB>>>(M, N, d_u, ldu, d_v, ldv, Ux, Uy);
   }
 
   cudaMemcpy(u, d_u, ldu * (M + 2) * sizeof(double), cudaMemcpyDeviceToHost);
@@ -198,5 +297,47 @@ void run_parallel_cuda_advection_2D_decomposition(int reps, double *u, int ldu) 
 
 // ... optimized parallel variant
 void run_parallel_cuda_advection_optimized(int reps, double *u, int ldu, int w) {
+  double Ux = Velx * dt / deltax, Uy = Vely * dt / deltay;
+  int ldv = N + 2; 
+  double *d_v, *d_u;;
 
+  cudaMalloc(&d_v, ldv * (M + 2) * sizeof(double));
+  cudaMalloc(&d_u, ldu * (M + 2) * sizeof(double));
+
+  dim3 dimG(Gx, Gy);
+  dim3 dimB(Bx, By);
+
+  cudaMemcpy(d_u, u, ldv * (M + 2) * sizeof(double), cudaMemcpyHostToDevice);
+  
+  //printf("M: %d, N: %d\n", M, N);
+  
+
+  for(int r = 0; r < reps; r++){
+    // update top/bottom halo
+    update_top_bot_halo_kernel<<<dimG, dimB>>>(M, N, d_u, ldu);
+
+
+    // update left/right halo
+    update_left_right_halo_kernel<<<dimG, dimB>>>(M, N, d_u, ldu);
+
+
+    // update advcetion
+    int max_M = (M + Gx - 1) / Gx;
+    int max_N = (N + Gy - 1) / Gy;
+    int sharedMemSize = (max_M) * (max_N) * sizeof(double);
+    printf("Doing optimized\n");
+    update_advection_kernel_optimized<<<dimG, dimB, sharedMemSize>>>(M, N, d_u, ldu, d_v, ldv, Ux, Uy);
+    cudaGetLastError();
+
+    // copy back
+    double *tmp = d_u;
+    d_u = d_v;
+    d_v = tmp;
+    //copy_field_kernel<<<dimG, dimB>>>(M, N, d_u, ldu, d_v, ldv, Ux, Uy);
+  }
+
+  cudaMemcpy(u, d_u, ldu * (M + 2) * sizeof(double), cudaMemcpyDeviceToHost);
+  cudaFree(d_u);
+  cudaFree(d_v);
+  
 } //run_parallel_cuda_advection_optimized()
