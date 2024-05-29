@@ -146,15 +146,7 @@ void update_advection_kernel_optimized(int M, int N, double *u, int ldu, double 
   int maxM = (M  + Gx - 1) / Gx;
   int maxN = (N  + Gy - 1) / Gy;
   int sharedMemSize = maxM * (maxN);
-  printf("sharedMemSize: %d\n", sharedMemSize);
-
-  //int x_thread_num = gridDim.x * blockDim.x;
-  //int y_thread_num = gridDim.y * blockDim.y;
-
- // int thread_x_index = blockIdx.x * Bx + threadIdx.x;
-  //int thread_y_index = blockIdx.y * By + threadIdx.y;
-
-  
+  //printf("sharedMemSize: %d\n", sharedMemSize);
 
   // Compute the size of the submatrix that the block need to work on in M dimension, halo excluded
   // Also, compute the starting index of the submatrix in M dimension in the u matrix
@@ -193,20 +185,23 @@ void update_advection_kernel_optimized(int M, int N, double *u, int ldu, double 
     thread_size_N = (threadIdx.y < By - 1) ? thread_size_N : block_size_N % thread_size_N;
   }
   
-  if(threadIdx.x == 0 && threadIdx.y == 0){
-    printf("For block: (%d,%d). block start: (%d,%d). block size: (%d,%d)\n", blockIdx.x, blockIdx.y, block_M_start, block_N_start, block_size_M, block_size_N);
-  }
+  //if(threadIdx.x == 0 && threadIdx.y == 0){
+    //printf("For block: (%d,%d). block start: (%d,%d). block size: (%d,%d)\n", blockIdx.x, blockIdx.y, block_M_start, block_N_start, block_size_M, block_size_N);
+  //}
+
+  // Update the advection field 
     
   __syncthreads();
 
+  /*
   printf("For thread: (%d,%d) in block: (%d, %d). Thread start: (%d,%d), thread len: (%d,%d). sharedMem index: (%d,%d) - (%d,%d)\n", 
-  threadIdx.x, threadIdx.y, blockIdx.x, blockIdx.y
-  , thread_M_start, thread_N_start, thread_size_M, thread_size_N
+  threadIdx.x, threadIdx.y, 
+  blockIdx.x, blockIdx.y
+  , thread_M_start, thread_N_start
+  , thread_size_M, thread_size_N
   , thread_M_start - block_M_start, thread_N_start - block_N_start
-  , thread_M_start - block_M_start + thread_size_M - 1, thread_N_start - block_N_start + thread_size_N - 1
-
-  
-  );
+  , thread_M_start - block_M_start + thread_size_M + 1, thread_N_start - block_N_start + thread_size_N + 1
+  ); */
   
   __syncthreads();
 
@@ -214,49 +209,33 @@ void update_advection_kernel_optimized(int M, int N, double *u, int ldu, double 
   // sharedMem is a shared memory, where shraedMem[i][j] where i, j represents u[block_M_start + i][block_N_start + j]
   extern __shared__ double sharedMem[];
 
+  // Update sharedMem array
+  // i, j here refers to the indexes as in matrix u
+  for(int i = thread_M_start - 1; i < thread_M_start + thread_size_M + 1; i++){
+    int s_i = i - block_M_start + 1; // i.e., thread_M_start - block_M_start at the beginning
+    for(int j = thread_N_start; j < thread_N_start + thread_size_N; j++){
+      int s_j = j - block_N_start;
+      sharedMem[s_i * block_size_N + s_j] = (cjm1 * u[i * ldu + j - 1] + cj0 * u[i * ldu + j] + cjp1 * u[i * ldu + j + 1]);
+    }
+  }
+
+  
   // perform advection update for a thread
+  __syncthreads();
   for(int i = thread_M_start; i < thread_M_start + thread_size_M; i++){
-    int s_i = i - block_M_start;
+    int s_i = i - block_M_start + 1;
     for(int j = thread_N_start; j < thread_N_start + thread_size_N; j++){
       int s_j = j - block_N_start;
       if(threadIdx.x == 0 && threadIdx.y == 0 && blockIdx.x == 1 && blockIdx.y == 2){
-        printf("s_i, s_j: %d, %d\n", s_i, s_j);
+        //printf("s_i, s_j: %d, %d\n", s_i, s_j);
       }
-      sharedMem[s_i * block_size_N + s_j] = (cjm1 * u[(i - 1) * ldu + j - 1] + cj0 * u[(i - 1) * ldu + j] + cjp1 * u[(i - 1) * ldu + j + 1]);
+      v[i * ldv + j] = 
+      cim1 * sharedMem[(s_i - 1) * block_size_N + s_j] +
+      ci0 * sharedMem[s_i * block_size_N + s_j] +
+      cip1 * sharedMem[(s_i + 1) * block_size_N + s_j];
     }
   }
-  __syncthreads();
-
-  for(int i = thread_M_start; i < thread_M_start + thread_size_M; i++){
-    int s_i = i - block_M_start;
-    for(int j = thread_N_start; j < thread_N_start + thread_size_N; j++){
-      int s_j = j - block_N_start;
-      v[i * ldv + j] = 
-          cim1 * sharedMem[(s_i - 1) * block_size_N + s_j] +
-          ci0 * sharedMem[s_i * block_size_N + s_j] +
-          cip1 * sharedMem[(s_i + 1) * block_size_N + s_j];
-    }
-  } 
-  
-
-  /*
-  for (int i=0; i < M; i++)
-    for (int j=0; j < N; j++)
-      v[i * ldv + j] =
-          cim1 * (cjm1 * u[(i - 1) * ldu + j - 1] + cj0 * u[(i - 1) * ldu + j] +
-                  cjp1 * u[(i - 1) * ldu + j + 1]) +
-          ci0 * (cjm1 * u[i * ldu + j - 1] + cj0 * u[i * ldu + j] +
-                 cjp1 * u[i * ldu + j + 1]) +
-          cip1 * (cjm1 * u[(i + 1) * ldu + j - 1] + cj0 * u[(i + 1) * ldu + j] +
-                  cjp1 * u[(i + 1) * ldu + j + 1]); */
-  
-  
-
-  //__syncthreads();
-
-  
-
-  
+  __syncthreads(); 
 
 }
 
@@ -367,9 +346,9 @@ void run_parallel_cuda_advection_optimized(int reps, double *u, int ldu, int w) 
 
     cudaDeviceProp prop;
     cudaGetDeviceProperties(&prop, 0);
-    printf("Max shared memory per block: %zu bytes\n", prop.sharedMemPerBlock);
+    printf("The max shared memory per block is: %zu bytes\n", prop.sharedMemPerBlock);
 
-    printf("Shared memory size: %d bytes\n", sharedMemSize);
+    printf("Shared memory size is: %d bytes\n", sharedMemSize);
 
     // copy back
     double *tmp = d_u;
