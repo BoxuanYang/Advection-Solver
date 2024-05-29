@@ -156,9 +156,6 @@ void update_advection_kernel_optimized(int M, int N, double *u, int ldu, double 
     block_size_M = (blockIdx.x < Gx - 1) ? block_size_M : M % block_size_M;
   }
 
-  
-  
-
   // Compute the size of the submatrix that the block need to work on in N dimension, halo excluded
   // Also, compute the starting index of the submatrix in N dimension in the u matrix
   int block_size_N = (N + Gy - 1) / Gy;
@@ -179,8 +176,6 @@ void update_advection_kernel_optimized(int M, int N, double *u, int ldu, double 
   // starting index of the thread in u equals block_M_start + offset
   int thread_M_start = block_M_start + threadIdx.x * thread_size_M;
   thread_size_M = (threadIdx.x < Bx - 1) ? thread_size_M : block_size_M - thread_size_M * (Bx - 1);
-  
-  
 
   // Compute the size of the submatrix that the thread need to work on in N dimension, halo excluded
   // Also, compute the starting index of the submatrix in M dimension in the u matrix
@@ -189,37 +184,13 @@ void update_advection_kernel_optimized(int M, int N, double *u, int ldu, double 
   int thread_N_start = block_N_start + threadIdx.y * thread_size_N;
   thread_size_N = (threadIdx.y < By - 1) ? thread_size_N : block_size_N - thread_size_N * (By - 1);
   
-  
-  //if(threadIdx.x == 0 && threadIdx.y == 0){
-    //printf("For block: (%d,%d). block start: (%d,%d). block size: (%d,%d)\n", blockIdx.x, blockIdx.y, block_M_start, block_N_start, block_size_M, block_size_N);
-  //}
-
-  // Update the advection field 
-    
-  __syncthreads();
 
 
-  
   // sharedMem is a shared memory, where shraedMem[i][j] where i, j represents u[block_M_start + i][block_N_start + j]
   extern __shared__ double sharedMem[];
 
   // Update sharedMem array
   // i, j here refers to the indexes as in matrix u
-
-
-  /*
-  printf("For thread: (%d,%d) in block: (%d, %d). s_i, s_j start: (%d,%d), thread len: (%d,%d). sharedMem index: (%d,%d) - (%d,%d)\n", 
-  threadIdx.x, threadIdx.y, 
-  blockIdx.x, blockIdx.y
-  , thread_M_start, thread_N_start
-  , thread_size_M, thread_size_N
-  , thread_M_start - block_M_start, thread_N_start - block_N_start
-  , thread_M_start - block_M_start + thread_size_M + 1, thread_N_start - block_N_start + thread_size_N + 1
-  ); */
-
-  
-
-
   for(int i = thread_M_start - 1; i < thread_M_start + thread_size_M + 1; i++){
     int s_i = i - block_M_start + 1; // i.e., thread_M_start - block_M_start at the beginning
     for(int j = thread_N_start; j < thread_N_start + thread_size_N; j++){
@@ -230,9 +201,6 @@ void update_advection_kernel_optimized(int M, int N, double *u, int ldu, double 
     }
   }
 
-
-
-  
   
   // perform advection update for a thread
   __syncthreads();
