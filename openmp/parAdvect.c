@@ -63,7 +63,6 @@ void omp_update_boundary_1D_decomposition(double *u, int ldu) {
 } 
 
 void omp_update_advection_field_1D_decomposition(double *u, int ldu, double *v, int ldv) {
-  int i, j;
   double Ux = Velx * dt / deltax, Uy = Vely * dt / deltay;
   double cim1, ci0, cip1, cjm1, cj0, cjp1;
   calculate_and_update_coefficients(Ux, &cim1, &ci0, &cip1); 
@@ -86,8 +85,8 @@ void omp_update_advection_field_1D_decomposition(double *u, int ldu, double *v, 
   
 
    // Unparallized version
-  for (i=0; i < M; i++){
-    for (j=0; j < N; j++){
+  for (int i=0; i < M; i++){
+    for (int j=0; j < N; j++){
       v[i * ldv + j] =
           cim1 * (cjm1 * u[(i - 1) * ldu + j - 1] + cj0 * u[(i - 1) * ldu + j] +
                   cjp1 * u[(i - 1) * ldu + j + 1]) +
@@ -130,6 +129,7 @@ void omp_update_advection_field_1D_decomposition(double *u, int ldu, double *v, 
     }
   }
   */
+  
 
   /*
   3. outer loop, j-i loop, dynamic
@@ -144,8 +144,9 @@ void omp_update_advection_field_1D_decomposition(double *u, int ldu, double *v, 
           cip1 * (cjm1 * u[(i + 1) * ldu + j - 1] + cj0 * u[(i + 1) * ldu + j] +
                   cjp1 * u[(i + 1) * ldu + j + 1]);
     }
-  }
-  */
+  } */
+  
+  
 
   /*
   4. outer loop, j-i loop, static
@@ -176,8 +177,8 @@ void omp_update_advection_field_1D_decomposition(double *u, int ldu, double *v, 
           cip1 * (cjm1 * u[(i + 1) * ldu + j - 1] + cj0 * u[(i + 1) * ldu + j] +
                   cjp1 * u[(i + 1) * ldu + j + 1]);
     }
-  }
-  */
+  } */
+  
 
   /*
   6. inner loop, i-j loop, static
@@ -285,7 +286,6 @@ void run_parallel_omp_advection_2D_decomposition(int reps, double *u, int ldu) {
   #pragma omp parallel
   {
     int thread_id = omp_get_thread_num();
-
     // number of rows for each thread except last one
     int M_size = M / P;
 
@@ -300,23 +300,14 @@ void run_parallel_omp_advection_2D_decomposition(int reps, double *u, int ldu) {
     // their row length and col length.
     int M_start = P0 * M_size + 1;
     int M_len = P0 < P - 1 ? M_size : M - M_start + 1;
-    //int M_end = M_start + M_len - 1;
 
     int N_start = Q0 * N_size + 1;
     int N_len = Q0 < Q - 1 ? N_size : N - N_start + 1;
-    //int N_end = N_start + N_len - 1;
-
-
-    //printf("Thread id: %d. (P0, Q0): (%d, %d)\n", thread_id, P0, Q0);
-    //printf("M_len, N_len: (%d,%d)\n", M_len, N_len);
-    //printf("M_start, N_start: (%d,%d). M_end, N_end: (%d, %d)\n\n", M_start, N_start, M_end, N_end);
     
 
     for(int r = 0; r < reps; r++){
-      
       #pragma omp single
       { 
-        
         // update top bottom halo, index: [M_start][N_start] - [M_start][N_end]
         #pragma omp task
         {

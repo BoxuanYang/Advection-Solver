@@ -1,5 +1,4 @@
 // CUDA parallel 2D advection solver module
-
 #include <stdio.h>
 #include <stdlib.h>
 #include <assert.h>
@@ -72,8 +71,6 @@ void update_top_bot_halo_kernel(int M, int N, double *u, int ldu){
     u[j] = u[M * ldu + j];
     u[(M+1) * ldu + j] = u[ldu + j];
   }
-
-  
 }
 
 __global__ 
@@ -91,8 +88,6 @@ void update_left_right_halo_kernel(int M, int N, double *u, int ldu){
 
   int i_start = thread_idx * thread_size;
   int i_end = (thread_idx < thread_num - 1) ? i_start + thread_size - 1 : M + 1;
-
-
 
   for(int i = i_start; i <= i_end; i++){
     u[i * ldu] = u[i * ldu + N];
@@ -116,12 +111,9 @@ void update_advection_kernel(int M, int N, double *u, int ldu, double *v, int ld
   int M_start = thread_x_index * M_size + 1;
   int M_len = thread_x_index < x_thread_num - 1 ? M_size : M - M_start + 1;
 
-
   int N_size = N / y_thread_num;
   int N_start = thread_y_index * N_size + 1;
   int N_len = thread_y_index < y_thread_num - 1 ? N_size : N - N_start + 1;
-
-
  
   my_update_advection_field(M_len, N_len, &u[M_start * ldu + N_start], ldu, &v[M_start * ldu + N_start], ldv, Ux, Uy);
 }
@@ -129,10 +121,6 @@ void update_advection_kernel(int M, int N, double *u, int ldu, double *v, int ld
 __global__
 void update_advection_kernel_optimized(int M, int N, double *u, int ldu, double *v, int ldv, double Ux, double Uy){
   // TODO
-  //printf("FUCK\n");
-
-  
-
   double cim1, ci0, cip1;
   double cjm1, cj0, cjp1;
   calculate_and_update_coefficients(Ux, &cim1, &ci0, &cip1);
@@ -209,10 +197,10 @@ void update_advection_kernel_optimized(int M, int N, double *u, int ldu, double 
     for(int j = thread_N_start; j < thread_N_start + thread_size_N; j++){
       int s_j = j - block_N_start;
       if(1 <= i && i <= M && 1 <= j && j <= N){
-      v[i * ldv + j] = 
-      cim1 * sharedMem[(s_i - 1) * block_size_N + s_j] +
-      ci0 * sharedMem[s_i * block_size_N + s_j] +
-      cip1 * sharedMem[(s_i + 1) * block_size_N + s_j];
+        v[i * ldv + j] = 
+        cim1 * sharedMem[(s_i - 1) * block_size_N + s_j] +
+        ci0 * sharedMem[s_i * block_size_N + s_j] +
+        cip1 * sharedMem[(s_i + 1) * block_size_N + s_j];
       }
       
     }
@@ -244,7 +232,9 @@ __global__ void copy_field_kernel(int M, int N, double *u, int ldu, double *v, i
 
 }
 
-
+__global__ void emptyKernel(){
+  return;
+}
 
 
 // evolve advection over reps timesteps, with (u,ldu) containing the field
@@ -261,25 +251,40 @@ void run_parallel_cuda_advection_2D_decomposition(int reps, double *u, int ldu) 
   dim3 dimB(Bx, By);
 
   cudaMemcpy(d_u, u, ldv * (M + 2) * sizeof(double), cudaMemcpyHostToDevice);
+
+  /*
   
-  //printf("M: %d, N: %d\n", M, N);
+  int numKernels = 10000;
+  cudaEvent_t start, stop;
+  float time;
+  cudaEventCreate(&start);
+  cudaEventCreate(&stop);
+  cudaEventRecord(start, 0);
+
+  for(int i = 0; i < numKernels; i++){
+    emptyKernel<<<1, 1>>>();
+  }
+
+  cudaEventRecord(stop, 0);
+  cudaEventSynchronize(stop);
+
+  cudaEventElapsedTime(&time, start, stop);
+  printf("Kernel lauch time: %f ms \n", time / numKernels);
+
+  cudaEventDestroy(start);
+  cudaEventDestroy(stop);
+  cudaDeviceReset(); */
   
 
   for(int r = 0; r < reps; r++){
     // update top/bottom halo
     update_top_bot_halo_kernel<<<dimG, dimB>>>(M, N, d_u, ldu);
-
     // update left/right halo
     update_left_right_halo_kernel<<<dimG, dimB>>>(M, N, d_u, ldu);
-
     // update advcetion
     update_advection_kernel<<<dimG, dimB>>>(M, N, d_u, ldu, d_v, ldv, Ux, Uy);
-
     // copy back
-    double *tmp = d_u;
-    d_u = d_v;
-    d_v = tmp;
-    //copy_field_kernel<<<dimG, dimB>>>(M, N, d_u, ldu, d_v, ldv, Ux, Uy);
+    copy_field_kernel<<<dimG, dimB>>>(M, N, d_u, ldu, d_v, ldv, Ux, Uy);
   }
 
   cudaMemcpy(u, d_u, ldu * (M + 2) * sizeof(double), cudaMemcpyDeviceToHost);
@@ -310,10 +315,8 @@ void run_parallel_cuda_advection_optimized(int reps, double *u, int ldu, int w) 
     // update top/bottom halo
     update_top_bot_halo_kernel<<<dimG, dimB>>>(M, N, d_u, ldu);
 
-
     // update left/right halo
     update_left_right_halo_kernel<<<dimG, dimB>>>(M, N, d_u, ldu);
-
 
     // update advcetion
     int max_M = (M + Gx - 1) / Gx;
@@ -332,9 +335,6 @@ void run_parallel_cuda_advection_optimized(int reps, double *u, int ldu, int w) 
     if (err != cudaSuccess){
       printf("CUDA Error: %s\n", cudaGetErrorString(err));
     }
-
-    
-    
 
     // copy back
     double *tmp = d_u;
