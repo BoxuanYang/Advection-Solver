@@ -152,9 +152,11 @@ void update_advection_kernel_optimized(int M, int N, double *u, int ldu, double 
   // Also, compute the starting index of the submatrix in M dimension in the u matrix
   int block_size_M = (M + Gx - 1) / Gx;
   int block_M_start = blockIdx.x * block_size_M + 1;
-  if(N % block_size_M != 0){
+  if(M % block_size_M != 0){
     block_size_M = (blockIdx.x < Gx - 1) ? block_size_M : M % block_size_M;
   }
+
+  
   
 
   // Compute the size of the submatrix that the block need to work on in N dimension, halo excluded
@@ -164,6 +166,11 @@ void update_advection_kernel_optimized(int M, int N, double *u, int ldu, double 
   if(N % block_size_N != 0){
     block_size_N = (blockIdx.y < Gy - 1) ? block_size_N : N % block_size_N;
   }
+
+  int block_size = block_size_M * block_size_N;
+  if(block_size > sharedMemSize){
+    printf("Too much memory for block (%d,%d)\n", blockIdx.x, blockIdx.y);
+  }
   
 
   // Compute the size of the submatrix that the thread need to work on in M dimension, halo excluded
@@ -172,6 +179,7 @@ void update_advection_kernel_optimized(int M, int N, double *u, int ldu, double 
   // starting index of the thread in u equals block_M_start + offset
   int thread_M_start = block_M_start + threadIdx.x * thread_size_M;
   thread_size_M = (threadIdx.x < Bx - 1) ? thread_size_M : block_size_M - thread_size_M * (Bx - 1);
+  
   
 
   // Compute the size of the submatrix that the thread need to work on in N dimension, halo excluded
@@ -190,17 +198,6 @@ void update_advection_kernel_optimized(int M, int N, double *u, int ldu, double 
     
   __syncthreads();
 
-  /*
-  printf("For thread: (%d,%d) in block: (%d, %d). Thread start: (%d,%d), thread len: (%d,%d). sharedMem index: (%d,%d) - (%d,%d)\n", 
-  threadIdx.x, threadIdx.y, 
-  blockIdx.x, blockIdx.y
-  , thread_M_start, thread_N_start
-  , thread_size_M, thread_size_N
-  , thread_M_start - block_M_start, thread_N_start - block_N_start
-  , thread_M_start - block_M_start + thread_size_M + 1, thread_N_start - block_N_start + thread_size_N + 1
-  ); */
-  
-  __syncthreads();
 
   
   // sharedMem is a shared memory, where shraedMem[i][j] where i, j represents u[block_M_start + i][block_N_start + j]
@@ -208,11 +205,28 @@ void update_advection_kernel_optimized(int M, int N, double *u, int ldu, double 
 
   // Update sharedMem array
   // i, j here refers to the indexes as in matrix u
+
+
+  /*
+  printf("For thread: (%d,%d) in block: (%d, %d). s_i, s_j start: (%d,%d), thread len: (%d,%d). sharedMem index: (%d,%d) - (%d,%d)\n", 
+  threadIdx.x, threadIdx.y, 
+  blockIdx.x, blockIdx.y
+  , thread_M_start, thread_N_start
+  , thread_size_M, thread_size_N
+  , thread_M_start - block_M_start, thread_N_start - block_N_start
+  , thread_M_start - block_M_start + thread_size_M + 1, thread_N_start - block_N_start + thread_size_N + 1
+  ); */
+
+  
+
+
   for(int i = thread_M_start - 1; i < thread_M_start + thread_size_M + 1; i++){
     int s_i = i - block_M_start + 1; // i.e., thread_M_start - block_M_start at the beginning
     for(int j = thread_N_start; j < thread_N_start + thread_size_N; j++){
       int s_j = j - block_N_start;
-      sharedMem[s_i * block_size_N + s_j] = (cjm1 * u[i * ldu + j - 1] + cj0 * u[i * ldu + j] + cjp1 * u[i * ldu + j + 1]);
+      if(0 <= i && i <= M + 1 && 1 <= j && j <= N){
+        sharedMem[s_i * block_size_N + s_j] = (cjm1 * u[i * ldu + j - 1] + cj0 * u[i * ldu + j] + cjp1 * u[i * ldu + j + 1]);
+      }
     }
   }
 
@@ -226,13 +240,13 @@ void update_advection_kernel_optimized(int M, int N, double *u, int ldu, double 
     int s_i = i - block_M_start + 1;
     for(int j = thread_N_start; j < thread_N_start + thread_size_N; j++){
       int s_j = j - block_N_start;
-      if(threadIdx.x == 0 && threadIdx.y == 0 && blockIdx.x == 1 && blockIdx.y == 2){
-        //printf("s_i, s_j: %d, %d\n", s_i, s_j);
-      }
+      if(1 <= i && i <= M && 1 <= j && j <= N){
       v[i * ldv + j] = 
       cim1 * sharedMem[(s_i - 1) * block_size_N + s_j] +
       ci0 * sharedMem[s_i * block_size_N + s_j] +
       cip1 * sharedMem[(s_i + 1) * block_size_N + s_j];
+      }
+      
     }
   } 
   __syncthreads(); 
