@@ -13,3 +13,4 @@ do
     # Run the testAdvect program with the specified arguments
     OMP_NUM_THREADS=$p ./testAdvect 1024 1024 100
 done
+
