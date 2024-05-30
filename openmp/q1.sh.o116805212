@@ -1,0 +1,48 @@
+p is: 1 --------------------------
+Advection of a 4096x4096 global field on 1 threads for 100 steps.
+Advection time 5.33e+00s, GFLOPs rate=6.30e+00 (per core 6.30e+00)
+Avg error of final field:  4.678e-08
+Max error of final field:  1.128e-07
+p is: 2 --------------------------
+Advection of a 4096x4096 global field on 2 threads for 100 steps.
+Advection time 4.60e+00s, GFLOPs rate=7.29e+00 (per core 3.65e+00)
+Avg error of final field:  4.678e-08
+Max error of final field:  1.128e-07
+p is: 4 --------------------------
+Advection of a 4096x4096 global field on 4 threads for 100 steps.
+Advection time 4.19e+00s, GFLOPs rate=8.00e+00 (per core 2.00e+00)
+Avg error of final field:  4.678e-08
+Max error of final field:  1.128e-07
+p is: 8 --------------------------
+Advection of a 4096x4096 global field on 8 threads for 100 steps.
+Advection time 4.36e+00s, GFLOPs rate=7.70e+00 (per core 9.63e-01)
+Avg error of final field:  4.678e-08
+Max error of final field:  1.128e-07
+p is: 16 --------------------------
+Advection of a 4096x4096 global field on 16 threads for 100 steps.
+Advection time 4.15e+00s, GFLOPs rate=8.08e+00 (per core 5.05e-01)
+Avg error of final field:  4.678e-08
+Max error of final field:  1.128e-07
+p is: 32 --------------------------
+Advection of a 4096x4096 global field on 32 threads for 100 steps.
+Advection time 4.09e+00s, GFLOPs rate=8.21e+00 (per core 2.57e-01)
+Avg error of final field:  4.678e-08
+Max error of final field:  1.128e-07
+p is: 64 --------------------------
+Advection of a 4096x4096 global field on 64 threads for 100 steps.
+Advection time 4.76e+00s, GFLOPs rate=7.05e+00 (per core 1.10e-01)
+Avg error of final field:  4.678e-08
+Max error of final field:  1.128e-07
+
+======================================================================================
+                  Resource Usage on 2024-05-29 22:37:09:
+   Job Id:             116805212.gadi-pbs
+   Project:            c07
+   Exit Status:        0
+   Service Units:      6.08
+   NCPUs Requested:    96                     NCPUs Used: 96              
+                                           CPU Time Used: 00:03:26        
+   Memory Requested:   32.0GB                Memory Used: 267.33MB        
+   Walltime requested: 00:01:00            Walltime Used: 00:00:38        
+   JobFS requested:    200.0MB                JobFS used: 0B              
+======================================================================================

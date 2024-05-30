@@ -20,7 +20,8 @@ void init_parallel_parameter_values(int M_, int N_, int P_, int Q_, int verb) {
 This function should be parallelized with the purpose of improving performance.
 */
 void omp_update_boundary_1D_decomposition(double *u, int ldu) {
-  /* Original code
+  // Original code
+  /*
   int i,j;
   for (j = 1; j < N+1; j++) { //top and bottom halo
     u[j] = u[M * ldu + j];
@@ -30,16 +31,17 @@ void omp_update_boundary_1D_decomposition(double *u, int ldu) {
   for (i = 0; i < M+2; i++) { //left and right sides of halo 
     u[i * ldu] = u[i * ldu + N];
     u[i * ldu + N + 1] = u[i * ldu + 1];
-  }
-  */
+  } */
+  
+ //printf("Hello\n");
   
   
-
+  
   int upper = (M > N) ? M : N;
-  int i;
+
 
   #pragma omp parallel for schedule(static)
-  for(i = 1; i <= upper; i++){
+  for(int i = 1; i <= upper; i++){
     if(i <= N){
       u[i] = u[M * ldu + i];
       u[(M + 1) * ldu + i] = u[ldu + i];
@@ -56,7 +58,7 @@ void omp_update_boundary_1D_decomposition(double *u, int ldu) {
   u[N+1] = u[1];
   u[(M+1) * ldu + N + 1] = u[(M+1) * ldu + 1];
 
-  return;
+  return; 
 
 
 
@@ -82,8 +84,10 @@ void omp_update_advection_field_1D_decomposition(double *u, int ldu, double *v, 
 
   M,N are global variables
   */
-  
 
+
+  
+  /*
    // Unparallized version
   for (int i=0; i < M; i++){
     for (int j=0; j < N; j++){
@@ -95,7 +99,7 @@ void omp_update_advection_field_1D_decomposition(double *u, int ldu, double *v, 
           cip1 * (cjm1 * u[(i + 1) * ldu + j - 1] + cj0 * u[(i + 1) * ldu + j] +
                   cjp1 * u[(i + 1) * ldu + j + 1]);
     }
-  }
+  } */
   
 
   /*
@@ -114,11 +118,18 @@ void omp_update_advection_field_1D_decomposition(double *u, int ldu, double *v, 
   }
   */
   
-  /*
-  2. outer loop, i-j loop, static
-  #pragma omp parallel for private(j) schedule(static)
-  for (i=0; i < M; i++){
-    for (j=0; j < N; j++){
+  
+  // 2. outer loop, i-j loop, static
+  //printf("Hello\n");
+  #pragma omp parallel for schedule(static)
+  for (int i=0; i < M; i++){
+    //int t_id = omp_get_thread_num();
+   // if(t_id == 0){
+      //int num_threads = omp_get_num_threads();
+     // printf("num_thread: %d\n", num_threads);
+    //}
+    
+    for (int j=0; j < N; j++){
       v[i * ldv + j] =
           cim1 * (cjm1 * u[(i - 1) * ldu + j - 1] + cj0 * u[(i - 1) * ldu + j] +
                   cjp1 * u[(i - 1) * ldu + j + 1]) +
@@ -128,7 +139,8 @@ void omp_update_advection_field_1D_decomposition(double *u, int ldu, double *v, 
                   cjp1 * u[(i + 1) * ldu + j + 1]);
     }
   }
-  */
+  
+  
   
 
   /*

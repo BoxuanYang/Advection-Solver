@@ -9,10 +9,10 @@
 e= #echo
 
 r=100
-M=1000 # may need to be bigger
+M=1024 # may need to be bigger
 N=$M
 
-ps="1 3 6 12 24 48"
+ps="1 2 4 8 16 32 64"
 
 for p in $ps; do
     opts= #"-P 1"

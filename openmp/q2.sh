@@ -7,17 +7,17 @@
 #
 
 # Array of values for p
-p_values=(1024 2048 4096 8192)
+p_values=(1 2 4 8)
 
 # Iterate over each value of p
-for m in "${p_values[@]}"
+for p in "${p_values[@]}"
 do
     # Set the environment variable OMP_NUM_THREADS to p
     #export OMP_NUM_THREADS=$p
-    echo "M is: $m --------------------------"
+    echo "p is: $p --------------------------"
     
     # Run the testAdvect program with the specified arguments
-    OMP_NUM_THREADS=16 ./testAdvect $m $m 5
+    OMP_NUM_THREADS=8 ./testAdvect -P $p  1024 1024 100
 done
 
 

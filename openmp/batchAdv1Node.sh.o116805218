@@ -1,0 +1,62 @@
+
+OMP_NUM_THREADS=1 numactl --cpunodebind=0 --membind=0 ./testAdvect 1024 1024 100
+Advection of a 1024x1024 global field on 1 threads for 100 steps.
+Advection time 2.66e-01s, GFLOPs rate=7.89e+00 (per core 7.89e+00)
+Avg error of final field:  2.994e-06
+Max error of final field:  7.219e-06
+
+
+OMP_NUM_THREADS=2 numactl --cpunodebind=0 --membind=0 ./testAdvect 1024 1024 100
+Advection of a 1024x1024 global field on 2 threads for 100 steps.
+Advection time 2.10e-01s, GFLOPs rate=9.98e+00 (per core 4.99e+00)
+Avg error of final field:  2.994e-06
+Max error of final field:  7.219e-06
+
+
+OMP_NUM_THREADS=4 numactl --cpunodebind=0 --membind=0 ./testAdvect 1024 1024 100
+Advection of a 1024x1024 global field on 4 threads for 100 steps.
+Advection time 1.61e-01s, GFLOPs rate=1.30e+01 (per core 3.25e+00)
+Avg error of final field:  2.994e-06
+Max error of final field:  7.219e-06
+
+
+OMP_NUM_THREADS=8 numactl --cpunodebind=0 --membind=0 ./testAdvect 1024 1024 100
+Advection of a 1024x1024 global field on 8 threads for 100 steps.
+Advection time 1.50e-01s, GFLOPs rate=1.40e+01 (per core 1.75e+00)
+Avg error of final field:  2.994e-06
+Max error of final field:  7.219e-06
+
+
+OMP_NUM_THREADS=16 numactl --cpunodebind=0 --membind=0 ./testAdvect 1024 1024 100
+Advection of a 1024x1024 global field on 16 threads for 100 steps.
+Advection time 2.14e-01s, GFLOPs rate=9.82e+00 (per core 6.14e-01)
+Avg error of final field:  2.994e-06
+Max error of final field:  7.219e-06
+
+
+OMP_NUM_THREADS=32 ./testAdvect 1024 1024 100
+Advection of a 1024x1024 global field on 32 threads for 100 steps.
+Advection time 2.00e-01s, GFLOPs rate=1.05e+01 (per core 3.28e-01)
+Avg error of final field:  2.994e-06
+Max error of final field:  7.219e-06
+
+
+OMP_NUM_THREADS=64 ./testAdvect 1024 1024 100
+Advection of a 1024x1024 global field on 64 threads for 100 steps.
+Advection time 3.04e-01s, GFLOPs rate=6.91e+00 (per core 1.08e-01)
+Avg error of final field:  2.994e-06
+Max error of final field:  7.219e-06
+
+
+======================================================================================
+                  Resource Usage on 2024-05-30 01:33:05:
+   Job Id:             116805218.gadi-pbs
+   Project:            c07
+   Exit Status:        0
+   Service Units:      0.24
+   NCPUs Requested:    48                     NCPUs Used: 48              
+                                           CPU Time Used: 00:00:12        
+   Memory Requested:   32.0GB                Memory Used: 26.31MB         
+   Walltime requested: 00:01:00            Walltime Used: 00:00:03        
+   JobFS requested:    100.0MB                JobFS used: 0B              
+======================================================================================

@@ -1,0 +1,37 @@
+p is: 1 --------------------------
+Advection of a 1024x1024 global field on 8 threads for 100 steps.
+	using a 1x8 decomposition
+Advection time 1.76e-01s, GFLOPs rate=7.86e+00 (per core 9.82e-01)
+Avg error of final field:  2.994e-06
+Max error of final field:  7.219e-06
+p is: 2 --------------------------
+Advection of a 1024x1024 global field on 8 threads for 100 steps.
+	using a 2x4 decomposition
+Advection time 1.56e-01s, GFLOPs rate=1.20e+01 (per core 1.50e+00)
+Avg error of final field:  2.994e-06
+Max error of final field:  7.219e-06
+p is: 4 --------------------------
+Advection of a 1024x1024 global field on 8 threads for 100 steps.
+	using a 4x2 decomposition
+Advection time 1.35e-01s, GFLOPs rate=1.35e+01 (per core 1.69e+00)
+Avg error of final field:  2.994e-06
+Max error of final field:  7.219e-06
+p is: 8 --------------------------
+Advection of a 1024x1024 global field on 8 threads for 100 steps.
+	using a 8x1 decomposition
+Advection time 2.01e-01s, GFLOPs rate=1.57e+01 (per core 1.96e+00)
+Avg error of final field:  2.994e-06
+Max error of final field:  7.219e-06
+
+======================================================================================
+                  Resource Usage on 2024-05-30 12:43:21:
+   Job Id:             116821209.gadi-pbs
+   Project:            c07
+   Exit Status:        0
+   Service Units:      0.01
+   NCPUs Requested:    4                      NCPUs Used: 4               
+                                           CPU Time Used: 00:00:02        
+   Memory Requested:   32.0GB                Memory Used: 18.94MB         
+   Walltime requested: 00:01:00            Walltime Used: 00:00:01        
+   JobFS requested:    100.0MB                JobFS used: 0B              
+======================================================================================

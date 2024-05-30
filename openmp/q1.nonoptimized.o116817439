@@ -1,0 +1,33 @@
+M is: 1024 --------------------------
+Advection of a 1024x1024 global field on 16 threads for 5 steps.
+Advection time 2.41e-02s, GFLOPs rate=4.35e+00 (per core 2.72e-01)
+Avg error of final field:  1.497e-07
+Max error of final field:  3.610e-07
+M is: 2048 --------------------------
+Advection of a 2048x2048 global field on 16 threads for 5 steps.
+Advection time 8.54e-02s, GFLOPs rate=4.91e+00 (per core 3.07e-01)
+Avg error of final field:  1.871e-08
+Max error of final field:  4.512e-08
+M is: 4096 --------------------------
+Advection of a 4096x4096 global field on 16 threads for 5 steps.
+Advection time 2.89e-01s, GFLOPs rate=5.81e+00 (per core 3.63e-01)
+Avg error of final field:  2.339e-09
+Max error of final field:  5.640e-09
+M is: 8192 --------------------------
+Advection of a 8192x8192 global field on 16 threads for 5 steps.
+Advection time 8.71e-01s, GFLOPs rate=7.70e+00 (per core 4.81e-01)
+Avg error of final field:  2.924e-10
+Max error of final field:  7.050e-10
+
+======================================================================================
+                  Resource Usage on 2024-05-30 11:47:14:
+   Job Id:             116817439.gadi-pbs
+   Project:            c07
+   Exit Status:        0
+   Service Units:      0.09
+   NCPUs Requested:    4                      NCPUs Used: 4               
+                                           CPU Time Used: 00:00:07        
+   Memory Requested:   32.0GB                Memory Used: 1.0GB           
+   Walltime requested: 00:01:00            Walltime Used: 00:00:07        
+   JobFS requested:    100.0MB                JobFS used: 0B              
+======================================================================================
