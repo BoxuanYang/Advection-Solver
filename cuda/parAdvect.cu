@@ -29,6 +29,8 @@ void my_update_advection_field(int M, int N, double *u, int ldu, double *v, int 
 		       double Ux, double Uy) {
   double cim1, ci0, cip1;
   double cjm1, cj0, cjp1;
+  // this is a copy of the update_advection_field() function.
+  // I met errors when directly use update_advection_field(), so I create a local copy
   calculate_and_update_coefficients(Ux, &cim1, &ci0, &cip1);
   calculate_and_update_coefficients(Uy, &cjm1, &cj0, &cjp1);
 
@@ -53,6 +55,7 @@ void my_copy_field(int M, int N, double *v, int ldv, double *u, int ldu) {
 
 __global__ 
 void update_top_bot_halo_kernel(int M, int N, double *u, int ldu){
+  // calculate the size of each halo that the thread needs to work on 
   int x_thread_num = gridDim.x * blockDim.x;
   int y_thread_num = gridDim.y * blockDim.y;
 
@@ -75,6 +78,7 @@ void update_top_bot_halo_kernel(int M, int N, double *u, int ldu){
 
 __global__ 
 void update_left_right_halo_kernel(int M, int N, double *u, int ldu){
+  // calculate the size of each halo that the thread needs to work on 
   int x_thread_num = gridDim.x * blockDim.x;
   int y_thread_num = gridDim.y * blockDim.y;
 
@@ -100,7 +104,7 @@ void update_left_right_halo_kernel(int M, int N, double *u, int ldu){
 __global__ 
 void update_advection_kernel(int M, int N, double *u, int ldu, double *v, int ldv, double Ux, double Uy){
   // TODO
-  //printf("FUCK\n");
+  // calculate the size of matrix each thread needs to work on
   int x_thread_num = gridDim.x * blockDim.x;
   int y_thread_num = gridDim.y * blockDim.y;
 
