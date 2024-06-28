@@ -1,0 +1,159 @@
+
+
+mpirun -np 96 ./testAdvect -P 1 1000 1000 100
+Advection of a 1000x1000 global field over 1x96 processes for 100 steps.
+Advection time 2.56e-02s, GFLOPs rate=7.80e+01 (per core 8.13e-01)
+Avg error of final field:  3.215e-06
+Max error of final field:  7.751e-06
+
+
+mpirun -np 96 ./testAdvect -P 2 1000 1000 100
+Advection of a 1000x1000 global field over 2x48 processes for 100 steps.
+Advection time 3.46e-02s, GFLOPs rate=5.78e+01 (per core 6.02e-01)
+Avg error of final field:  3.215e-06
+Max error of final field:  7.751e-06
+
+
+mpirun -np 96 ./testAdvect -P 3 1000 1000 100
+Advection of a 1000x1000 global field over 3x32 processes for 100 steps.
+Advection time 1.74e-02s, GFLOPs rate=1.15e+02 (per core 1.20e+00)
+Avg error of final field:  3.215e-06
+Max error of final field:  7.751e-06
+
+
+mpirun -np 96 ./testAdvect -P 4 1000 1000 100
+Advection of a 1000x1000 global field over 4x24 processes for 100 steps.
+Advection time 3.92e-02s, GFLOPs rate=5.10e+01 (per core 5.32e-01)
+Avg error of final field:  3.215e-06
+Max error of final field:  7.751e-06
+
+
+mpirun -np 96 ./testAdvect -P 6 1000 1000 100
+Advection of a 1000x1000 global field over 6x16 processes for 100 steps.
+Advection time 4.28e-02s, GFLOPs rate=4.67e+01 (per core 4.86e-01)
+Avg error of final field:  3.215e-06
+Max error of final field:  7.751e-06
+
+
+mpirun -np 96 ./testAdvect -P 8 1000 1000 100
+Advection of a 1000x1000 global field over 8x12 processes for 100 steps.
+Advection time 1.86e-02s, GFLOPs rate=1.07e+02 (per core 1.12e+00)
+Avg error of final field:  3.215e-06
+Max error of final field:  7.751e-06
+
+
+mpirun -np 96 ./testAdvect -P 16 1000 1000 100
+Advection of a 1000x1000 global field over 16x6 processes for 100 steps.
+Advection time 1.89e-02s, GFLOPs rate=1.06e+02 (per core 1.10e+00)
+Avg error of final field:  3.215e-06
+Max error of final field:  7.751e-06
+
+gadi-cpu-clx-1938.gadi.nci.org.au
+gadi-cpu-clx-1938.gadi.nci.org.au
+gadi-cpu-clx-1938.gadi.nci.org.au
+gadi-cpu-clx-1938.gadi.nci.org.au
+gadi-cpu-clx-1938.gadi.nci.org.au
+gadi-cpu-clx-1938.gadi.nci.org.au
+gadi-cpu-clx-1938.gadi.nci.org.au
+gadi-cpu-clx-1938.gadi.nci.org.au
+gadi-cpu-clx-1938.gadi.nci.org.au
+gadi-cpu-clx-1938.gadi.nci.org.au
+gadi-cpu-clx-1938.gadi.nci.org.au
+gadi-cpu-clx-1938.gadi.nci.org.au
+gadi-cpu-clx-1938.gadi.nci.org.au
+gadi-cpu-clx-1938.gadi.nci.org.au
+gadi-cpu-clx-1938.gadi.nci.org.au
+gadi-cpu-clx-1938.gadi.nci.org.au
+gadi-cpu-clx-1938.gadi.nci.org.au
+gadi-cpu-clx-1938.gadi.nci.org.au
+gadi-cpu-clx-1938.gadi.nci.org.au
+gadi-cpu-clx-1938.gadi.nci.org.au
+gadi-cpu-clx-1938.gadi.nci.org.au
+gadi-cpu-clx-1938.gadi.nci.org.au
+gadi-cpu-clx-1938.gadi.nci.org.au
+gadi-cpu-clx-1938.gadi.nci.org.au
+gadi-cpu-clx-1938.gadi.nci.org.au
+gadi-cpu-clx-1938.gadi.nci.org.au
+gadi-cpu-clx-1938.gadi.nci.org.au
+gadi-cpu-clx-1938.gadi.nci.org.au
+gadi-cpu-clx-1938.gadi.nci.org.au
+gadi-cpu-clx-1938.gadi.nci.org.au
+gadi-cpu-clx-1938.gadi.nci.org.au
+gadi-cpu-clx-1938.gadi.nci.org.au
+gadi-cpu-clx-1938.gadi.nci.org.au
+gadi-cpu-clx-1938.gadi.nci.org.au
+gadi-cpu-clx-1938.gadi.nci.org.au
+gadi-cpu-clx-1938.gadi.nci.org.au
+gadi-cpu-clx-1938.gadi.nci.org.au
+gadi-cpu-clx-1938.gadi.nci.org.au
+gadi-cpu-clx-1938.gadi.nci.org.au
+gadi-cpu-clx-1938.gadi.nci.org.au
+gadi-cpu-clx-1938.gadi.nci.org.au
+gadi-cpu-clx-1938.gadi.nci.org.au
+gadi-cpu-clx-1938.gadi.nci.org.au
+gadi-cpu-clx-1938.gadi.nci.org.au
+gadi-cpu-clx-1938.gadi.nci.org.au
+gadi-cpu-clx-1938.gadi.nci.org.au
+gadi-cpu-clx-1938.gadi.nci.org.au
+gadi-cpu-clx-1938.gadi.nci.org.au
+gadi-cpu-clx-1941.gadi.nci.org.au
+gadi-cpu-clx-1941.gadi.nci.org.au
+gadi-cpu-clx-1941.gadi.nci.org.au
+gadi-cpu-clx-1941.gadi.nci.org.au
+gadi-cpu-clx-1941.gadi.nci.org.au
+gadi-cpu-clx-1941.gadi.nci.org.au
+gadi-cpu-clx-1941.gadi.nci.org.au
+gadi-cpu-clx-1941.gadi.nci.org.au
+gadi-cpu-clx-1941.gadi.nci.org.au
+gadi-cpu-clx-1941.gadi.nci.org.au
+gadi-cpu-clx-1941.gadi.nci.org.au
+gadi-cpu-clx-1941.gadi.nci.org.au
+gadi-cpu-clx-1941.gadi.nci.org.au
+gadi-cpu-clx-1941.gadi.nci.org.au
+gadi-cpu-clx-1941.gadi.nci.org.au
+gadi-cpu-clx-1941.gadi.nci.org.au
+gadi-cpu-clx-1941.gadi.nci.org.au
+gadi-cpu-clx-1941.gadi.nci.org.au
+gadi-cpu-clx-1941.gadi.nci.org.au
+gadi-cpu-clx-1941.gadi.nci.org.au
+gadi-cpu-clx-1941.gadi.nci.org.au
+gadi-cpu-clx-1941.gadi.nci.org.au
+gadi-cpu-clx-1941.gadi.nci.org.au
+gadi-cpu-clx-1941.gadi.nci.org.au
+gadi-cpu-clx-1941.gadi.nci.org.au
+gadi-cpu-clx-1941.gadi.nci.org.au
+gadi-cpu-clx-1941.gadi.nci.org.au
+gadi-cpu-clx-1941.gadi.nci.org.au
+gadi-cpu-clx-1941.gadi.nci.org.au
+gadi-cpu-clx-1941.gadi.nci.org.au
+gadi-cpu-clx-1941.gadi.nci.org.au
+gadi-cpu-clx-1941.gadi.nci.org.au
+gadi-cpu-clx-1941.gadi.nci.org.au
+gadi-cpu-clx-1941.gadi.nci.org.au
+gadi-cpu-clx-1941.gadi.nci.org.au
+gadi-cpu-clx-1941.gadi.nci.org.au
+gadi-cpu-clx-1941.gadi.nci.org.au
+gadi-cpu-clx-1941.gadi.nci.org.au
+gadi-cpu-clx-1941.gadi.nci.org.au
+gadi-cpu-clx-1941.gadi.nci.org.au
+gadi-cpu-clx-1941.gadi.nci.org.au
+gadi-cpu-clx-1941.gadi.nci.org.au
+gadi-cpu-clx-1941.gadi.nci.org.au
+gadi-cpu-clx-1941.gadi.nci.org.au
+gadi-cpu-clx-1941.gadi.nci.org.au
+gadi-cpu-clx-1941.gadi.nci.org.au
+gadi-cpu-clx-1941.gadi.nci.org.au
+gadi-cpu-clx-1941.gadi.nci.org.au
+
+======================================================================================
+                  Resource Usage on 2024-04-18 17:22:27:
+   Job Id:             114094204.gadi-pbs
+   Project:            c07
+   Exit Status:        0
+   Service Units:      2.40
+   NCPUs Requested:    96                     NCPUs Used: 96              
+                                           CPU Time Used: 00:48:36        
+   Memory Requested:   128.0GB               Memory Used: 31.42GB         
+   Walltime requested: 00:01:00            Walltime Used: 00:00:45        
+   JobFS requested:    200.0MB                JobFS used: 0B              
+======================================================================================

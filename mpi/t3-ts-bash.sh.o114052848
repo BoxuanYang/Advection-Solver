@@ -1,0 +1,74 @@
+
+
+mpirun -np 2 ./ts
+ts * 10000 for send is: 0.001000
+ts * 10000 for receive is: 0.001016
+
+mpirun -np 2 ./tf
+tf * 20000000 is: 0.053825
+tf * 20000000 is: 0.054039
+
+mpirun -np 2 ./tw
+10000 * (ts + 10000 * tw) for send is: 0.089191
+10000 * (ts + 10000 * tw) for receive is: 0.089160
+gadi-cpu-clx-2520.gadi.nci.org.au
+gadi-cpu-clx-2520.gadi.nci.org.au
+gadi-cpu-clx-2520.gadi.nci.org.au
+gadi-cpu-clx-2520.gadi.nci.org.au
+gadi-cpu-clx-2520.gadi.nci.org.au
+gadi-cpu-clx-2520.gadi.nci.org.au
+gadi-cpu-clx-2520.gadi.nci.org.au
+gadi-cpu-clx-2520.gadi.nci.org.au
+gadi-cpu-clx-2520.gadi.nci.org.au
+gadi-cpu-clx-2520.gadi.nci.org.au
+gadi-cpu-clx-2520.gadi.nci.org.au
+gadi-cpu-clx-2520.gadi.nci.org.au
+gadi-cpu-clx-2520.gadi.nci.org.au
+gadi-cpu-clx-2520.gadi.nci.org.au
+gadi-cpu-clx-2520.gadi.nci.org.au
+gadi-cpu-clx-2520.gadi.nci.org.au
+gadi-cpu-clx-2520.gadi.nci.org.au
+gadi-cpu-clx-2520.gadi.nci.org.au
+gadi-cpu-clx-2520.gadi.nci.org.au
+gadi-cpu-clx-2520.gadi.nci.org.au
+gadi-cpu-clx-2520.gadi.nci.org.au
+gadi-cpu-clx-2520.gadi.nci.org.au
+gadi-cpu-clx-2520.gadi.nci.org.au
+gadi-cpu-clx-2520.gadi.nci.org.au
+gadi-cpu-clx-2520.gadi.nci.org.au
+gadi-cpu-clx-2520.gadi.nci.org.au
+gadi-cpu-clx-2520.gadi.nci.org.au
+gadi-cpu-clx-2520.gadi.nci.org.au
+gadi-cpu-clx-2520.gadi.nci.org.au
+gadi-cpu-clx-2520.gadi.nci.org.au
+gadi-cpu-clx-2520.gadi.nci.org.au
+gadi-cpu-clx-2520.gadi.nci.org.au
+gadi-cpu-clx-2520.gadi.nci.org.au
+gadi-cpu-clx-2520.gadi.nci.org.au
+gadi-cpu-clx-2520.gadi.nci.org.au
+gadi-cpu-clx-2520.gadi.nci.org.au
+gadi-cpu-clx-2520.gadi.nci.org.au
+gadi-cpu-clx-2520.gadi.nci.org.au
+gadi-cpu-clx-2520.gadi.nci.org.au
+gadi-cpu-clx-2520.gadi.nci.org.au
+gadi-cpu-clx-2520.gadi.nci.org.au
+gadi-cpu-clx-2520.gadi.nci.org.au
+gadi-cpu-clx-2520.gadi.nci.org.au
+gadi-cpu-clx-2520.gadi.nci.org.au
+gadi-cpu-clx-2520.gadi.nci.org.au
+gadi-cpu-clx-2520.gadi.nci.org.au
+gadi-cpu-clx-2520.gadi.nci.org.au
+gadi-cpu-clx-2520.gadi.nci.org.au
+
+======================================================================================
+                  Resource Usage on 2024-04-17 21:34:53:
+   Job Id:             114052848.gadi-pbs
+   Project:            c07
+   Exit Status:        0
+   Service Units:      0.19
+   NCPUs Requested:    48                     NCPUs Used: 48              
+                                           CPU Time Used: 00:00:05        
+   Memory Requested:   128.0GB               Memory Used: 692.44MB        
+   Walltime requested: 00:01:00            Walltime Used: 00:00:07        
+   JobFS requested:    100.0MB                JobFS used: 0B              
+======================================================================================

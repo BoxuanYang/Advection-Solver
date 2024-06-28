@@ -1,0 +1,255 @@
+
+
+mpirun -np 1 ./testAdvect 1000 1000 100
+Advection of a 1000x1000 global field over 1x1 processes for 100 steps.
+Advection time 2.30e-01s, GFLOPs rate=8.69e+00 (per core 8.69e+00)
+Avg error of final field:  3.215e-06
+Max error of final field:  7.751e-06
+
+
+mpirun -np 4 ./testAdvect 1000 1000 100
+Advection of a 1000x1000 global field over 4x1 processes for 100 steps.
+Advection time 6.32e-02s, GFLOPs rate=3.17e+01 (per core 7.92e+00)
+Avg error of final field:  3.215e-06
+Max error of final field:  7.751e-06
+
+
+mpirun -np 8 ./testAdvect 1000 1000 100
+Advection of a 1000x1000 global field over 8x1 processes for 100 steps.
+Advection time 3.55e-02s, GFLOPs rate=5.64e+01 (per core 7.05e+00)
+Avg error of final field:  3.215e-06
+Max error of final field:  7.751e-06
+
+
+mpirun -np 16 ./testAdvect 1000 1000 100
+Advection of a 1000x1000 global field over 16x1 processes for 100 steps.
+Advection time 1.67e-02s, GFLOPs rate=1.19e+02 (per core 7.47e+00)
+Avg error of final field:  3.215e-06
+Max error of final field:  7.751e-06
+
+
+mpirun -np 32 ./testAdvect 1000 1000 100
+Advection of a 1000x1000 global field over 32x1 processes for 100 steps.
+Advection time 2.46e-02s, GFLOPs rate=8.12e+01 (per core 2.54e+00)
+Avg error of final field:  3.215e-06
+Max error of final field:  7.751e-06
+
+
+mpirun -np 64 ./testAdvect 1000 1000 100
+Advection of a 1000x1000 global field over 64x1 processes for 100 steps.
+Advection time 1.96e-02s, GFLOPs rate=1.02e+02 (per core 1.60e+00)
+Avg error of final field:  3.215e-06
+Max error of final field:  7.751e-06
+
+
+mpirun -np 128 ./testAdvect 1000 1000 100
+Advection of a 1000x1000 global field over 128x1 processes for 100 steps.
+Advection time 2.96e-02s, GFLOPs rate=6.76e+01 (per core 5.28e-01)
+Avg error of final field:  3.215e-06
+Max error of final field:  7.751e-06
+
+gadi-cpu-clx-0560.gadi.nci.org.au
+gadi-cpu-clx-0560.gadi.nci.org.au
+gadi-cpu-clx-0560.gadi.nci.org.au
+gadi-cpu-clx-0560.gadi.nci.org.au
+gadi-cpu-clx-0560.gadi.nci.org.au
+gadi-cpu-clx-0560.gadi.nci.org.au
+gadi-cpu-clx-0560.gadi.nci.org.au
+gadi-cpu-clx-0560.gadi.nci.org.au
+gadi-cpu-clx-0560.gadi.nci.org.au
+gadi-cpu-clx-0560.gadi.nci.org.au
+gadi-cpu-clx-0560.gadi.nci.org.au
+gadi-cpu-clx-0560.gadi.nci.org.au
+gadi-cpu-clx-0560.gadi.nci.org.au
+gadi-cpu-clx-0560.gadi.nci.org.au
+gadi-cpu-clx-0560.gadi.nci.org.au
+gadi-cpu-clx-0560.gadi.nci.org.au
+gadi-cpu-clx-0560.gadi.nci.org.au
+gadi-cpu-clx-0560.gadi.nci.org.au
+gadi-cpu-clx-0560.gadi.nci.org.au
+gadi-cpu-clx-0560.gadi.nci.org.au
+gadi-cpu-clx-0560.gadi.nci.org.au
+gadi-cpu-clx-0560.gadi.nci.org.au
+gadi-cpu-clx-0560.gadi.nci.org.au
+gadi-cpu-clx-0560.gadi.nci.org.au
+gadi-cpu-clx-0560.gadi.nci.org.au
+gadi-cpu-clx-0560.gadi.nci.org.au
+gadi-cpu-clx-0560.gadi.nci.org.au
+gadi-cpu-clx-0560.gadi.nci.org.au
+gadi-cpu-clx-0560.gadi.nci.org.au
+gadi-cpu-clx-0560.gadi.nci.org.au
+gadi-cpu-clx-0560.gadi.nci.org.au
+gadi-cpu-clx-0560.gadi.nci.org.au
+gadi-cpu-clx-0560.gadi.nci.org.au
+gadi-cpu-clx-0560.gadi.nci.org.au
+gadi-cpu-clx-0560.gadi.nci.org.au
+gadi-cpu-clx-0560.gadi.nci.org.au
+gadi-cpu-clx-0560.gadi.nci.org.au
+gadi-cpu-clx-0560.gadi.nci.org.au
+gadi-cpu-clx-0560.gadi.nci.org.au
+gadi-cpu-clx-0560.gadi.nci.org.au
+gadi-cpu-clx-0560.gadi.nci.org.au
+gadi-cpu-clx-0560.gadi.nci.org.au
+gadi-cpu-clx-0560.gadi.nci.org.au
+gadi-cpu-clx-0560.gadi.nci.org.au
+gadi-cpu-clx-0560.gadi.nci.org.au
+gadi-cpu-clx-0560.gadi.nci.org.au
+gadi-cpu-clx-0560.gadi.nci.org.au
+gadi-cpu-clx-0560.gadi.nci.org.au
+gadi-cpu-clx-0561.gadi.nci.org.au
+gadi-cpu-clx-0561.gadi.nci.org.au
+gadi-cpu-clx-0561.gadi.nci.org.au
+gadi-cpu-clx-0561.gadi.nci.org.au
+gadi-cpu-clx-0561.gadi.nci.org.au
+gadi-cpu-clx-0561.gadi.nci.org.au
+gadi-cpu-clx-0561.gadi.nci.org.au
+gadi-cpu-clx-0561.gadi.nci.org.au
+gadi-cpu-clx-0561.gadi.nci.org.au
+gadi-cpu-clx-0561.gadi.nci.org.au
+gadi-cpu-clx-0561.gadi.nci.org.au
+gadi-cpu-clx-0561.gadi.nci.org.au
+gadi-cpu-clx-0561.gadi.nci.org.au
+gadi-cpu-clx-0561.gadi.nci.org.au
+gadi-cpu-clx-0561.gadi.nci.org.au
+gadi-cpu-clx-0561.gadi.nci.org.au
+gadi-cpu-clx-0561.gadi.nci.org.au
+gadi-cpu-clx-0561.gadi.nci.org.au
+gadi-cpu-clx-0561.gadi.nci.org.au
+gadi-cpu-clx-0561.gadi.nci.org.au
+gadi-cpu-clx-0561.gadi.nci.org.au
+gadi-cpu-clx-0561.gadi.nci.org.au
+gadi-cpu-clx-0561.gadi.nci.org.au
+gadi-cpu-clx-0561.gadi.nci.org.au
+gadi-cpu-clx-0561.gadi.nci.org.au
+gadi-cpu-clx-0561.gadi.nci.org.au
+gadi-cpu-clx-0561.gadi.nci.org.au
+gadi-cpu-clx-0561.gadi.nci.org.au
+gadi-cpu-clx-0561.gadi.nci.org.au
+gadi-cpu-clx-0561.gadi.nci.org.au
+gadi-cpu-clx-0561.gadi.nci.org.au
+gadi-cpu-clx-0561.gadi.nci.org.au
+gadi-cpu-clx-0561.gadi.nci.org.au
+gadi-cpu-clx-0561.gadi.nci.org.au
+gadi-cpu-clx-0561.gadi.nci.org.au
+gadi-cpu-clx-0561.gadi.nci.org.au
+gadi-cpu-clx-0561.gadi.nci.org.au
+gadi-cpu-clx-0561.gadi.nci.org.au
+gadi-cpu-clx-0561.gadi.nci.org.au
+gadi-cpu-clx-0561.gadi.nci.org.au
+gadi-cpu-clx-0561.gadi.nci.org.au
+gadi-cpu-clx-0561.gadi.nci.org.au
+gadi-cpu-clx-0561.gadi.nci.org.au
+gadi-cpu-clx-0561.gadi.nci.org.au
+gadi-cpu-clx-0561.gadi.nci.org.au
+gadi-cpu-clx-0561.gadi.nci.org.au
+gadi-cpu-clx-0561.gadi.nci.org.au
+gadi-cpu-clx-0561.gadi.nci.org.au
+gadi-cpu-clx-0563.gadi.nci.org.au
+gadi-cpu-clx-0563.gadi.nci.org.au
+gadi-cpu-clx-0563.gadi.nci.org.au
+gadi-cpu-clx-0563.gadi.nci.org.au
+gadi-cpu-clx-0563.gadi.nci.org.au
+gadi-cpu-clx-0563.gadi.nci.org.au
+gadi-cpu-clx-0563.gadi.nci.org.au
+gadi-cpu-clx-0563.gadi.nci.org.au
+gadi-cpu-clx-0563.gadi.nci.org.au
+gadi-cpu-clx-0563.gadi.nci.org.au
+gadi-cpu-clx-0563.gadi.nci.org.au
+gadi-cpu-clx-0563.gadi.nci.org.au
+gadi-cpu-clx-0563.gadi.nci.org.au
+gadi-cpu-clx-0563.gadi.nci.org.au
+gadi-cpu-clx-0563.gadi.nci.org.au
+gadi-cpu-clx-0563.gadi.nci.org.au
+gadi-cpu-clx-0563.gadi.nci.org.au
+gadi-cpu-clx-0563.gadi.nci.org.au
+gadi-cpu-clx-0563.gadi.nci.org.au
+gadi-cpu-clx-0563.gadi.nci.org.au
+gadi-cpu-clx-0563.gadi.nci.org.au
+gadi-cpu-clx-0563.gadi.nci.org.au
+gadi-cpu-clx-0563.gadi.nci.org.au
+gadi-cpu-clx-0563.gadi.nci.org.au
+gadi-cpu-clx-0563.gadi.nci.org.au
+gadi-cpu-clx-0563.gadi.nci.org.au
+gadi-cpu-clx-0563.gadi.nci.org.au
+gadi-cpu-clx-0563.gadi.nci.org.au
+gadi-cpu-clx-0563.gadi.nci.org.au
+gadi-cpu-clx-0563.gadi.nci.org.au
+gadi-cpu-clx-0563.gadi.nci.org.au
+gadi-cpu-clx-0563.gadi.nci.org.au
+gadi-cpu-clx-0563.gadi.nci.org.au
+gadi-cpu-clx-0563.gadi.nci.org.au
+gadi-cpu-clx-0563.gadi.nci.org.au
+gadi-cpu-clx-0563.gadi.nci.org.au
+gadi-cpu-clx-0563.gadi.nci.org.au
+gadi-cpu-clx-0563.gadi.nci.org.au
+gadi-cpu-clx-0563.gadi.nci.org.au
+gadi-cpu-clx-0563.gadi.nci.org.au
+gadi-cpu-clx-0563.gadi.nci.org.au
+gadi-cpu-clx-0563.gadi.nci.org.au
+gadi-cpu-clx-0563.gadi.nci.org.au
+gadi-cpu-clx-0563.gadi.nci.org.au
+gadi-cpu-clx-0563.gadi.nci.org.au
+gadi-cpu-clx-0563.gadi.nci.org.au
+gadi-cpu-clx-0563.gadi.nci.org.au
+gadi-cpu-clx-0563.gadi.nci.org.au
+gadi-cpu-clx-0564.gadi.nci.org.au
+gadi-cpu-clx-0564.gadi.nci.org.au
+gadi-cpu-clx-0564.gadi.nci.org.au
+gadi-cpu-clx-0564.gadi.nci.org.au
+gadi-cpu-clx-0564.gadi.nci.org.au
+gadi-cpu-clx-0564.gadi.nci.org.au
+gadi-cpu-clx-0564.gadi.nci.org.au
+gadi-cpu-clx-0564.gadi.nci.org.au
+gadi-cpu-clx-0564.gadi.nci.org.au
+gadi-cpu-clx-0564.gadi.nci.org.au
+gadi-cpu-clx-0564.gadi.nci.org.au
+gadi-cpu-clx-0564.gadi.nci.org.au
+gadi-cpu-clx-0564.gadi.nci.org.au
+gadi-cpu-clx-0564.gadi.nci.org.au
+gadi-cpu-clx-0564.gadi.nci.org.au
+gadi-cpu-clx-0564.gadi.nci.org.au
+gadi-cpu-clx-0564.gadi.nci.org.au
+gadi-cpu-clx-0564.gadi.nci.org.au
+gadi-cpu-clx-0564.gadi.nci.org.au
+gadi-cpu-clx-0564.gadi.nci.org.au
+gadi-cpu-clx-0564.gadi.nci.org.au
+gadi-cpu-clx-0564.gadi.nci.org.au
+gadi-cpu-clx-0564.gadi.nci.org.au
+gadi-cpu-clx-0564.gadi.nci.org.au
+gadi-cpu-clx-0564.gadi.nci.org.au
+gadi-cpu-clx-0564.gadi.nci.org.au
+gadi-cpu-clx-0564.gadi.nci.org.au
+gadi-cpu-clx-0564.gadi.nci.org.au
+gadi-cpu-clx-0564.gadi.nci.org.au
+gadi-cpu-clx-0564.gadi.nci.org.au
+gadi-cpu-clx-0564.gadi.nci.org.au
+gadi-cpu-clx-0564.gadi.nci.org.au
+gadi-cpu-clx-0564.gadi.nci.org.au
+gadi-cpu-clx-0564.gadi.nci.org.au
+gadi-cpu-clx-0564.gadi.nci.org.au
+gadi-cpu-clx-0564.gadi.nci.org.au
+gadi-cpu-clx-0564.gadi.nci.org.au
+gadi-cpu-clx-0564.gadi.nci.org.au
+gadi-cpu-clx-0564.gadi.nci.org.au
+gadi-cpu-clx-0564.gadi.nci.org.au
+gadi-cpu-clx-0564.gadi.nci.org.au
+gadi-cpu-clx-0564.gadi.nci.org.au
+gadi-cpu-clx-0564.gadi.nci.org.au
+gadi-cpu-clx-0564.gadi.nci.org.au
+gadi-cpu-clx-0564.gadi.nci.org.au
+gadi-cpu-clx-0564.gadi.nci.org.au
+gadi-cpu-clx-0564.gadi.nci.org.au
+gadi-cpu-clx-0564.gadi.nci.org.au
+
+======================================================================================
+                  Resource Usage on 2024-04-16 22:00:36:
+   Job Id:             113984942.gadi-pbs
+   Project:            c07
+   Exit Status:        0
+   Service Units:      2.77
+   NCPUs Requested:    192                    NCPUs Used: 192             
+                                           CPU Time Used: 00:14:42        
+   Memory Requested:   128.0GB               Memory Used: 42.05GB         
+   Walltime requested: 00:01:00            Walltime Used: 00:00:26        
+   JobFS requested:    400.0MB                JobFS used: 0B              
+======================================================================================

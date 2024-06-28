@@ -1,0 +1,264 @@
+
+
+mpirun -np 2 ./testAdvect -o 1000 1000 100
+Advection of a 1000x1000 global field over 2x1 processes for 100 steps.
+Using overlap communication/computation
+Advection time 1.24e-01s, GFLOPs rate=1.62e+01 (per core 8.08e+00)
+Avg error of final field:  3.217e-06
+Max error of final field:  8.274e-05
+
+mpirun -np 2 ./testAdvect 1000 1000 100
+Advection of a 1000x1000 global field over 2x1 processes for 100 steps.
+Advection time 1.29e-01s, GFLOPs rate=1.55e+01 (per core 7.75e+00)
+Avg error of final field:  3.215e-06
+Max error of final field:  7.751e-06
+
+
+
+mpirun -np 4 ./testAdvect -o 1000 1000 100
+Advection of a 1000x1000 global field over 4x1 processes for 100 steps.
+Using overlap communication/computation
+Advection time 6.58e-02s, GFLOPs rate=3.04e+01 (per core 7.60e+00)
+Avg error of final field:  3.227e-06
+Max error of final field:  2.577e-04
+
+mpirun -np 4 ./testAdvect 1000 1000 100
+Advection of a 1000x1000 global field over 4x1 processes for 100 steps.
+Advection time 8.17e-02s, GFLOPs rate=2.45e+01 (per core 6.12e+00)
+Avg error of final field:  3.215e-06
+Max error of final field:  7.751e-06
+
+
+
+mpirun -np 8 ./testAdvect -o 1000 1000 100
+Advection of a 1000x1000 global field over 8x1 processes for 100 steps.
+Using overlap communication/computation
+Advection time 3.21e-02s, GFLOPs rate=6.23e+01 (per core 7.79e+00)
+Avg error of final field:  3.241e-06
+Max error of final field:  2.332e-04
+
+mpirun -np 8 ./testAdvect 1000 1000 100
+Advection of a 1000x1000 global field over 8x1 processes for 100 steps.
+Advection time 3.57e-02s, GFLOPs rate=5.60e+01 (per core 7.00e+00)
+Avg error of final field:  3.215e-06
+Max error of final field:  7.751e-06
+
+
+
+mpirun -np 16 ./testAdvect -o 1000 1000 100
+Advection of a 1000x1000 global field over 16x1 processes for 100 steps.
+Using overlap communication/computation
+Advection time 1.43e-02s, GFLOPs rate=1.40e+02 (per core 8.74e+00)
+Avg error of final field:  3.266e-06
+Max error of final field:  2.710e-04
+
+mpirun -np 16 ./testAdvect 1000 1000 100
+Advection of a 1000x1000 global field over 16x1 processes for 100 steps.
+Advection time 1.68e-02s, GFLOPs rate=1.19e+02 (per core 7.43e+00)
+Avg error of final field:  3.215e-06
+Max error of final field:  7.751e-06
+
+
+
+mpirun -np 32 ./testAdvect -o 1000 1000 100
+Advection of a 1000x1000 global field over 32x1 processes for 100 steps.
+Using overlap communication/computation
+Advection time 1.43e-02s, GFLOPs rate=1.40e+02 (per core 4.37e+00)
+Avg error of final field:  3.316e-06
+Max error of final field:  2.697e-04
+
+mpirun -np 32 ./testAdvect 1000 1000 100
+Advection of a 1000x1000 global field over 32x1 processes for 100 steps.
+Advection time 9.32e-03s, GFLOPs rate=2.15e+02 (per core 6.71e+00)
+Avg error of final field:  3.215e-06
+Max error of final field:  7.751e-06
+
+
+
+mpirun -np 64 ./testAdvect -o 1000 1000 100
+Advection of a 1000x1000 global field over 64x1 processes for 100 steps.
+Using overlap communication/computation
+Advection time 1.81e-02s, GFLOPs rate=1.11e+02 (per core 1.73e+00)
+Avg error of final field:  3.429e-06
+Max error of final field:  2.704e-04
+
+mpirun -np 64 ./testAdvect 1000 1000 100
+Advection of a 1000x1000 global field over 64x1 processes for 100 steps.
+Advection time 1.58e-02s, GFLOPs rate=1.27e+02 (per core 1.98e+00)
+Avg error of final field:  3.215e-06
+Max error of final field:  7.751e-06
+
+
+
+mpirun -np 128 ./testAdvect -o 1000 1000 100
+--------------------------------------------------------------------------
+There are not enough slots available in the system to satisfy the 128
+slots that were requested by the application:
+
+  ./testAdvect
+
+Either request fewer slots for your application, or make more slots
+available for use.
+
+A "slot" is the Open MPI term for an allocatable unit where we can
+launch a process.  The number of slots available are defined by the
+environment in which Open MPI processes are run:
+
+  1. Hostfile, via "slots=N" clauses (N defaults to number of
+     processor cores if not provided)
+  2. The --host command line parameter, via a ":N" suffix on the
+     hostname (N defaults to 1 if not provided)
+  3. Resource manager (e.g., SLURM, PBS/Torque, LSF, etc.)
+  4. If none of a hostfile, the --host command line parameter, or an
+     RM is present, Open MPI defaults to the number of processor cores
+
+In all the above cases, if you want Open MPI to default to the number
+of hardware threads instead of the number of processor cores, use the
+--use-hwthread-cpus option.
+
+Alternatively, you can use the --oversubscribe option to ignore the
+number of available slots when deciding the number of processes to
+launch.
+--------------------------------------------------------------------------
+
+mpirun -np 128 ./testAdvect 1000 1000 100
+--------------------------------------------------------------------------
+There are not enough slots available in the system to satisfy the 128
+slots that were requested by the application:
+
+  ./testAdvect
+
+Either request fewer slots for your application, or make more slots
+available for use.
+
+A "slot" is the Open MPI term for an allocatable unit where we can
+launch a process.  The number of slots available are defined by the
+environment in which Open MPI processes are run:
+
+  1. Hostfile, via "slots=N" clauses (N defaults to number of
+     processor cores if not provided)
+  2. The --host command line parameter, via a ":N" suffix on the
+     hostname (N defaults to 1 if not provided)
+  3. Resource manager (e.g., SLURM, PBS/Torque, LSF, etc.)
+  4. If none of a hostfile, the --host command line parameter, or an
+     RM is present, Open MPI defaults to the number of processor cores
+
+In all the above cases, if you want Open MPI to default to the number
+of hardware threads instead of the number of processor cores, use the
+--use-hwthread-cpus option.
+
+Alternatively, you can use the --oversubscribe option to ignore the
+number of available slots when deciding the number of processes to
+launch.
+--------------------------------------------------------------------------
+
+
+gadi-cpu-clx-1890.gadi.nci.org.au
+gadi-cpu-clx-1890.gadi.nci.org.au
+gadi-cpu-clx-1890.gadi.nci.org.au
+gadi-cpu-clx-1890.gadi.nci.org.au
+gadi-cpu-clx-1890.gadi.nci.org.au
+gadi-cpu-clx-1890.gadi.nci.org.au
+gadi-cpu-clx-1890.gadi.nci.org.au
+gadi-cpu-clx-1890.gadi.nci.org.au
+gadi-cpu-clx-1890.gadi.nci.org.au
+gadi-cpu-clx-1890.gadi.nci.org.au
+gadi-cpu-clx-1890.gadi.nci.org.au
+gadi-cpu-clx-1890.gadi.nci.org.au
+gadi-cpu-clx-1890.gadi.nci.org.au
+gadi-cpu-clx-1890.gadi.nci.org.au
+gadi-cpu-clx-1890.gadi.nci.org.au
+gadi-cpu-clx-1890.gadi.nci.org.au
+gadi-cpu-clx-1890.gadi.nci.org.au
+gadi-cpu-clx-1890.gadi.nci.org.au
+gadi-cpu-clx-1890.gadi.nci.org.au
+gadi-cpu-clx-1890.gadi.nci.org.au
+gadi-cpu-clx-1890.gadi.nci.org.au
+gadi-cpu-clx-1890.gadi.nci.org.au
+gadi-cpu-clx-1890.gadi.nci.org.au
+gadi-cpu-clx-1890.gadi.nci.org.au
+gadi-cpu-clx-1890.gadi.nci.org.au
+gadi-cpu-clx-1890.gadi.nci.org.au
+gadi-cpu-clx-1890.gadi.nci.org.au
+gadi-cpu-clx-1890.gadi.nci.org.au
+gadi-cpu-clx-1890.gadi.nci.org.au
+gadi-cpu-clx-1890.gadi.nci.org.au
+gadi-cpu-clx-1890.gadi.nci.org.au
+gadi-cpu-clx-1890.gadi.nci.org.au
+gadi-cpu-clx-1890.gadi.nci.org.au
+gadi-cpu-clx-1890.gadi.nci.org.au
+gadi-cpu-clx-1890.gadi.nci.org.au
+gadi-cpu-clx-1890.gadi.nci.org.au
+gadi-cpu-clx-1890.gadi.nci.org.au
+gadi-cpu-clx-1890.gadi.nci.org.au
+gadi-cpu-clx-1890.gadi.nci.org.au
+gadi-cpu-clx-1890.gadi.nci.org.au
+gadi-cpu-clx-1890.gadi.nci.org.au
+gadi-cpu-clx-1890.gadi.nci.org.au
+gadi-cpu-clx-1890.gadi.nci.org.au
+gadi-cpu-clx-1890.gadi.nci.org.au
+gadi-cpu-clx-1890.gadi.nci.org.au
+gadi-cpu-clx-1890.gadi.nci.org.au
+gadi-cpu-clx-1890.gadi.nci.org.au
+gadi-cpu-clx-1890.gadi.nci.org.au
+gadi-cpu-clx-1892.gadi.nci.org.au
+gadi-cpu-clx-1892.gadi.nci.org.au
+gadi-cpu-clx-1892.gadi.nci.org.au
+gadi-cpu-clx-1892.gadi.nci.org.au
+gadi-cpu-clx-1892.gadi.nci.org.au
+gadi-cpu-clx-1892.gadi.nci.org.au
+gadi-cpu-clx-1892.gadi.nci.org.au
+gadi-cpu-clx-1892.gadi.nci.org.au
+gadi-cpu-clx-1892.gadi.nci.org.au
+gadi-cpu-clx-1892.gadi.nci.org.au
+gadi-cpu-clx-1892.gadi.nci.org.au
+gadi-cpu-clx-1892.gadi.nci.org.au
+gadi-cpu-clx-1892.gadi.nci.org.au
+gadi-cpu-clx-1892.gadi.nci.org.au
+gadi-cpu-clx-1892.gadi.nci.org.au
+gadi-cpu-clx-1892.gadi.nci.org.au
+gadi-cpu-clx-1892.gadi.nci.org.au
+gadi-cpu-clx-1892.gadi.nci.org.au
+gadi-cpu-clx-1892.gadi.nci.org.au
+gadi-cpu-clx-1892.gadi.nci.org.au
+gadi-cpu-clx-1892.gadi.nci.org.au
+gadi-cpu-clx-1892.gadi.nci.org.au
+gadi-cpu-clx-1892.gadi.nci.org.au
+gadi-cpu-clx-1892.gadi.nci.org.au
+gadi-cpu-clx-1892.gadi.nci.org.au
+gadi-cpu-clx-1892.gadi.nci.org.au
+gadi-cpu-clx-1892.gadi.nci.org.au
+gadi-cpu-clx-1892.gadi.nci.org.au
+gadi-cpu-clx-1892.gadi.nci.org.au
+gadi-cpu-clx-1892.gadi.nci.org.au
+gadi-cpu-clx-1892.gadi.nci.org.au
+gadi-cpu-clx-1892.gadi.nci.org.au
+gadi-cpu-clx-1892.gadi.nci.org.au
+gadi-cpu-clx-1892.gadi.nci.org.au
+gadi-cpu-clx-1892.gadi.nci.org.au
+gadi-cpu-clx-1892.gadi.nci.org.au
+gadi-cpu-clx-1892.gadi.nci.org.au
+gadi-cpu-clx-1892.gadi.nci.org.au
+gadi-cpu-clx-1892.gadi.nci.org.au
+gadi-cpu-clx-1892.gadi.nci.org.au
+gadi-cpu-clx-1892.gadi.nci.org.au
+gadi-cpu-clx-1892.gadi.nci.org.au
+gadi-cpu-clx-1892.gadi.nci.org.au
+gadi-cpu-clx-1892.gadi.nci.org.au
+gadi-cpu-clx-1892.gadi.nci.org.au
+gadi-cpu-clx-1892.gadi.nci.org.au
+gadi-cpu-clx-1892.gadi.nci.org.au
+gadi-cpu-clx-1892.gadi.nci.org.au
+
+======================================================================================
+                  Resource Usage on 2024-04-18 17:36:03:
+   Job Id:             114095277.gadi-pbs
+   Project:            c07
+   Exit Status:        0
+   Service Units:      1.97
+   NCPUs Requested:    96                     NCPUs Used: 96              
+                                           CPU Time Used: 00:12:00        
+   Memory Requested:   128.0GB               Memory Used: 20.56GB         
+   Walltime requested: 00:01:00            Walltime Used: 00:00:37        
+   JobFS requested:    200.0MB                JobFS used: 0B              
+======================================================================================

@@ -1,0 +1,118 @@
+
+
+mpirun -np 24 ./testAdvect -P 1 1000 1000 100
+Advection of a 1000x1000 global field over 1x24 processes for 100 steps.
+Advection time 1.97e-02s, GFLOPs rate=1.02e+02 (per core 4.23e+00)
+Avg error of final field:  3.215e-06
+Max error of final field:  7.751e-06
+
+
+mpirun -np 24 ./testAdvect -P 2 1000 1000 100
+Advection of a 1000x1000 global field over 2x12 processes for 100 steps.
+Advection time 2.44e-02s, GFLOPs rate=8.19e+01 (per core 3.41e+00)
+Avg error of final field:  3.215e-06
+Max error of final field:  7.751e-06
+
+
+mpirun -np 24 ./testAdvect -P 3 1000 1000 100
+Advection of a 1000x1000 global field over 3x8 processes for 100 steps.
+Advection time 1.89e-02s, GFLOPs rate=1.06e+02 (per core 4.41e+00)
+Avg error of final field:  3.215e-06
+Max error of final field:  7.751e-06
+
+
+mpirun -np 24 ./testAdvect -P 4 1000 1000 100
+Advection of a 1000x1000 global field over 4x6 processes for 100 steps.
+Advection time 2.34e-02s, GFLOPs rate=8.57e+01 (per core 3.57e+00)
+Avg error of final field:  3.215e-06
+Max error of final field:  7.751e-06
+
+
+mpirun -np 24 ./testAdvect -P 6 1000 1000 100
+Advection of a 1000x1000 global field over 6x4 processes for 100 steps.
+Advection time 1.37e-02s, GFLOPs rate=1.46e+02 (per core 6.06e+00)
+Avg error of final field:  3.215e-06
+Max error of final field:  7.751e-06
+
+
+mpirun -np 24 ./testAdvect -P 8 1000 1000 100
+Advection of a 1000x1000 global field over 8x3 processes for 100 steps.
+Advection time 2.20e-02s, GFLOPs rate=9.09e+01 (per core 3.79e+00)
+Avg error of final field:  3.215e-06
+Max error of final field:  7.751e-06
+
+
+mpirun -np 24 ./testAdvect -P 12 1000 1000 100
+Advection of a 1000x1000 global field over 12x2 processes for 100 steps.
+Advection time 1.83e-02s, GFLOPs rate=1.10e+02 (per core 4.56e+00)
+Avg error of final field:  3.215e-06
+Max error of final field:  7.751e-06
+
+
+mpirun -np 24 ./testAdvect -P 24 1000 1000 100
+Advection of a 1000x1000 global field over 24x1 processes for 100 steps.
+Advection time 2.10e-02s, GFLOPs rate=9.51e+01 (per core 3.96e+00)
+Avg error of final field:  3.215e-06
+Max error of final field:  7.751e-06
+
+gadi-cpu-clx-1549.gadi.nci.org.au
+gadi-cpu-clx-1549.gadi.nci.org.au
+gadi-cpu-clx-1549.gadi.nci.org.au
+gadi-cpu-clx-1549.gadi.nci.org.au
+gadi-cpu-clx-1549.gadi.nci.org.au
+gadi-cpu-clx-1549.gadi.nci.org.au
+gadi-cpu-clx-1549.gadi.nci.org.au
+gadi-cpu-clx-1549.gadi.nci.org.au
+gadi-cpu-clx-1549.gadi.nci.org.au
+gadi-cpu-clx-1549.gadi.nci.org.au
+gadi-cpu-clx-1549.gadi.nci.org.au
+gadi-cpu-clx-1549.gadi.nci.org.au
+gadi-cpu-clx-1549.gadi.nci.org.au
+gadi-cpu-clx-1549.gadi.nci.org.au
+gadi-cpu-clx-1549.gadi.nci.org.au
+gadi-cpu-clx-1549.gadi.nci.org.au
+gadi-cpu-clx-1549.gadi.nci.org.au
+gadi-cpu-clx-1549.gadi.nci.org.au
+gadi-cpu-clx-1549.gadi.nci.org.au
+gadi-cpu-clx-1549.gadi.nci.org.au
+gadi-cpu-clx-1549.gadi.nci.org.au
+gadi-cpu-clx-1549.gadi.nci.org.au
+gadi-cpu-clx-1549.gadi.nci.org.au
+gadi-cpu-clx-1549.gadi.nci.org.au
+gadi-cpu-clx-1549.gadi.nci.org.au
+gadi-cpu-clx-1549.gadi.nci.org.au
+gadi-cpu-clx-1549.gadi.nci.org.au
+gadi-cpu-clx-1549.gadi.nci.org.au
+gadi-cpu-clx-1549.gadi.nci.org.au
+gadi-cpu-clx-1549.gadi.nci.org.au
+gadi-cpu-clx-1549.gadi.nci.org.au
+gadi-cpu-clx-1549.gadi.nci.org.au
+gadi-cpu-clx-1549.gadi.nci.org.au
+gadi-cpu-clx-1549.gadi.nci.org.au
+gadi-cpu-clx-1549.gadi.nci.org.au
+gadi-cpu-clx-1549.gadi.nci.org.au
+gadi-cpu-clx-1549.gadi.nci.org.au
+gadi-cpu-clx-1549.gadi.nci.org.au
+gadi-cpu-clx-1549.gadi.nci.org.au
+gadi-cpu-clx-1549.gadi.nci.org.au
+gadi-cpu-clx-1549.gadi.nci.org.au
+gadi-cpu-clx-1549.gadi.nci.org.au
+gadi-cpu-clx-1549.gadi.nci.org.au
+gadi-cpu-clx-1549.gadi.nci.org.au
+gadi-cpu-clx-1549.gadi.nci.org.au
+gadi-cpu-clx-1549.gadi.nci.org.au
+gadi-cpu-clx-1549.gadi.nci.org.au
+gadi-cpu-clx-1549.gadi.nci.org.au
+
+======================================================================================
+                  Resource Usage on 2024-04-18 12:06:55:
+   Job Id:             114079980.gadi-pbs
+   Project:            c07
+   Exit Status:        0
+   Service Units:      0.56
+   NCPUs Requested:    48                     NCPUs Used: 48              
+                                           CPU Time Used: 00:06:15        
+   Memory Requested:   128.0GB               Memory Used: 8.99GB          
+   Walltime requested: 00:01:00            Walltime Used: 00:00:21        
+   JobFS requested:    100.0MB                JobFS used: 0B              
+======================================================================================
