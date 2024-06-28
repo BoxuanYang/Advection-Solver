@@ -138,7 +138,6 @@ void update_advection_kernel_optimized(int M, int N, double *u, int ldu, double 
   int maxM = (M  + Gx - 1) / Gx;
   int maxN = (N  + Gy - 1) / Gy;
   int sharedMemSize = maxM * (maxN);
-  //printf("sharedMemSize: %d\n", sharedMemSize);
 
   // Compute the size of the submatrix that the block need to work on in M dimension, halo excluded
   // Also, compute the starting index of the submatrix in M dimension in the u matrix
@@ -161,7 +160,6 @@ void update_advection_kernel_optimized(int M, int N, double *u, int ldu, double 
     printf("Too much memory for block (%d,%d)\n", blockIdx.x, blockIdx.y);
   }
   
-
   // Compute the size of the submatrix that the thread need to work on in M dimension, halo excluded
   // Also, compute the starting index of the submatrix in M dimension in the u matrix
   int thread_size_M = block_size_M / Bx;
@@ -175,8 +173,6 @@ void update_advection_kernel_optimized(int M, int N, double *u, int ldu, double 
   // starting index of the thread in u equals block_N_start + offset
   int thread_N_start = block_N_start + threadIdx.y * thread_size_N;
   thread_size_N = (threadIdx.y < By - 1) ? thread_size_N : block_size_N - thread_size_N * (By - 1);
-  
-
 
   // sharedMem is a shared memory, where shraedMem[i][j] where i, j represents u[block_M_start + i][block_N_start + j]
   extern __shared__ double sharedMem[];

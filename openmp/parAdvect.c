@@ -121,14 +121,14 @@ void omp_update_advection_field_1D_decomposition(double *u, int ldu, double *v, 
   
   // 2. outer loop, i-j loop, static
   //printf("Hello\n");
+  int count = 0;
   #pragma omp parallel for schedule(static)
   for (int i=0; i < M; i++){
-    //int t_id = omp_get_thread_num();
+    int t_id = omp_get_thread_num();
    // if(t_id == 0){
       //int num_threads = omp_get_num_threads();
      // printf("num_thread: %d\n", num_threads);
     //}
-    
     for (int j=0; j < N; j++){
       v[i * ldv + j] =
           cim1 * (cjm1 * u[(i - 1) * ldu + j - 1] + cj0 * u[(i - 1) * ldu + j] +
@@ -139,6 +139,8 @@ void omp_update_advection_field_1D_decomposition(double *u, int ldu, double *v, 
                   cjp1 * u[(i + 1) * ldu + j + 1]);
     }
   }
+
+  printf("count: %d\n", count);
   
   
   
