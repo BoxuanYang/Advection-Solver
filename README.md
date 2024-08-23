@@ -1,30 +1,34 @@
-# COMP4300/8300 Parallel Systems Assignment 2, 2024
-# Advection Solver For Shared Address Space Programming Models
+# Advection Solver
+This project is my personal implementation of the advection solver problem in earth science.
 
-## Deadline: 26/05/2024, 11:55PM
+## The advection equation
 
-*(Please report any errors, omissions and ambiguities to the course lecturer)* \
-*(We may make small amendments and fixes to this document after its release; please keep an eye on the commit history after release date just in case)*
+We are aiming to solve a time-space problem, a.k.a. time-dependent or transient problem. This means that the continuous solution of the PDE varies both in space (the square domain) and time, i.e., at each point in time we have a different distribution of the solution in space. The equations read as: 
 
-This assignment is worth 25% of your total course mark.
+find $`u(\mathbf{x},t) : \mathcal{D} \times [0,T] \rightarrow R`$ such that:
+$$\frac{\partial u}{\partial t} + \mathbf{v} \cdot \nabla u = 0 \ \mathrm{in} \ \mathcal{D} \times (0,T] $$
+where: 
+ * $`u(\mathbf{x},0)=\sin(4.0 \pi x)  \sin(2.0 \pi y)`$ (initial condition, $`t=0`$)
+ * $`u((0,y),t)=u((1,y),t)`$ (top boundary=bottom boundary periodic boundary condition, $`t>0`$)
+ * $`u((x,0),t)=u((x,1),t)`$ (left boundary=right boundary periodic boundary condition, $`t>0`$)
+ * $`\mathcal{D}`$ is the domain where the equations are posed, in our case just an square.
+ * $` [0,T]`$ is the time interval in which you want to solve the equation (e.g., $`T=10`$ seconds) 
+ * $`\mathbf{x}=(x,y)`$ are the Cartesian coordinates of a point in $`\mathcal{D}`$
+ * $`\nabla u`$ is the gradient of $`u`$ (i.e., a vector-valued field with the partial derivatives in space).
+ * $`\mathbf{v}`$ is a given/known (vector-valued) velocity field that describes the dynamics of a fluid which is "transporting" the quantity $`u`$. This is known as advection velocity.
+* $`\frac{\partial u}{\partial t}`$ is the partial time derivative of $`u`$. 
 
-## Assignment Setup and Submission
+This equation models the process of *transport*, e.g. wind in an atmosphere simulation. In practice, the most important uses for advection solvers are for 3D phenomena. However, 2D solvers can still model some important problems, e.g. water surface wave propagation, and are considerably simpler to implement. 
 
-This assignment must be submitted electronically. To obtain a copy of the template source files, you must *fork* the gitlab project [`comp4300-assignment2`](https://gitlab.cecs.anu.edu.au/comp4300/2024/comp4300-assignment2) into your own gitlab area, and *push* the final version of your files into your fork of the `comp4300-assignment2` gitlab project before the deadline.
+## Discretization of the advection equation
 
-The files that will be marked are a report `ps-ass2Rep.pdf` and the C/CUDA files `parAdvect.c`, `parAdvect.cu`.  The report must be **at most**  2,000 words long. 
-A good report will present information in an easy to digest format - for example figures and plots are often much easier to interpret than raw tables of data. You should avoid putting snippets of code in the report and instead keep the discussion at a high level, referring the reader to the appropriate locations in your code where appropriate. **The report has a large relative weight in the final mark, and should be well-written. Submissions without report will get a very low mark.**
+To discretize these equations, there are a myriad of numerical methods around. There is indeed still state-of-the-art research being made on novel/improved numerical methods for these equations. In any case, in the assignment we are using a very simple (the most simple) discretization approach. Namely, forward finite differences for the time derivative (also known as Forward Euler time integration method), and an appropriate finite difference formula for the derivatives in space (i.e., for the gradient). The interval [0,T] is split into equal segments of size $`\Delta t`$, and the space domain $`\mathcal{D}`$ is split into a regular space grid of points as we did in the with the Heat Equation in the "Synchronous Computations" lectures. The stencils of the time-space discretization are grounded on the particular finite-difference formulas used for the approximation of the time and space partial derivatives. When solved on a 2D regular Cartesian grid, advection uses a 9-point stencil (unlike the heat flow problem, which is a 5-point stencil). 
 
-Please see [here](https://comp.anu.edu.au/courses/comp4300/assignments_workflow/) for additional workflow notes. Most importantly, use the login node only for debugging purposes on a moderate number of OpenMP threads (e.g., 1-8). The actual performance analysis should be done on the compute nodes using the job scripts provided in this repo. 
-
-## Learning Objectives
-
-* Implement a shared memory parallel algorithm using the OpenMP and CUDA programming models.
-* Gain an understanding of some of the performance and programmability implications of SMP and GPU systems.
+Now, Forward Euler is an explicit method, which essentially means that in order to obtain the solution at the next time step from the one at the previous step, we just need to perform matrix-vector products. We do **NOT** have to solve linear systems at each iteration, this is why here there is actually no Jacobi iteration as with the Heat Equation. While computationally cheap, Forward Euler is not unconditionally stable, meaning that as you refine the spatial mesh the time discretization mesh resolution should be adjusted (increased) appropriately according to the so-called [CFL](https://en.wikipedia.org/wiki/Courant%E2%80%93Friedrichs%E2%80%93Lewy_condition) condition to obtain physically meaningful results. 
 
 ## Setup
 
-Your assignment project directory will contain a `ps-ass2Rep.pdf`, initially empty, which you must overwrite with your own report. It also contains two sub-directories, `openmp` and `cuda`. The former contains a test program `testAdvect.c`, a file `serAdvect.c` containing serial advection functions, some header files, and a template OpenMP advection solver `parAdvect.c`. The test program can be built using the command `make`.
+
 
 The usage for the test program is:
 
@@ -56,7 +60,7 @@ Tasks 1. and 2. below are mandatory. Tasks 3. and 4. are optional, and do not co
 You can use these to test your knowledge in preparation for the final exam.  
 
 
-1. **Parallelization via 1D Decomposition and Simple Directives** [15/50 marks]
+1. **Parallelization via 1D Decomposition and Simple Directives**
 
     Parallelize the functions `omp_update_advection_field_1D_decomposition()` and `omp_copy_field_1D_decomposition()` in `parAdvect.c`. Each loop nesting must have its own parallel region, and the parallelization must be over one of the two loop indices (hint: this can be done via simple OMP parallel for directives).
 
@@ -75,31 +79,24 @@ You can use these to test your knowledge in preparation for the final exam.
 
     Now, leave the best performing parallelization combination in your file.
 
-2. **Parallelization via 2D Decomposition and an Extended Parallel Region** [10/50 marks]
+2. **Parallelization via 2D Decomposition and an Extended Parallel Region** 
 
     In the function `run_parallel_omp_advection_2D_decomposition()`, write an advection solver such there is only a single parallel region (over all timesteps), and the parallelization is over a `P` by `Q` block distribution. *Hint:* each thread could call `update_advection_field()` and `copy_field()` over its respective sub-array; alternately you could 'inline' these functions and restrict the `i,j` loops to operate on the thread's sub-array.
 
     For suitable measurements with the best-performing `p` from Q1 and varying `P`, compare performance. Discuss whether there is any gain from the 2D distribution. Comparing this with the 1D vs 2D case for the MPI version of the solver, and explain any differences with the relative advantages. Comparing with your results in Q1 for the `P=p` case, was there any advantage in having a single parallel region?
 
 
-3. **Optional: Performance Modelling of Shared Memory Programs** [0/50 marks]
-
-    Let $`t_s`$ denote the cost of a parallel region entry/exit, and $`t_{w,R}`$ and $`t_{w,W}`$ denote the cost per (double) word of a cache miss for read and writes, respectively. By counting the expected number of these events in cases 1 to 4 above, and using your measurements from the previous question, derive values for these parameters for the value of `p` in your experiments in Q1 where the performance of case (1) was best.
-
-    Construct a performance model for the best-performing variant (*hint:* it should be similar to the 1D model you used in Assignment 1). You may neglect the update of the boundary in your model. Discuss whether the $`t_s`$ and $`t_w`$ values are comparable with what you obtained for single-node MPI (note that you are *not* being asked to compare your model's predictions with the actual performance in this assignment).
 
 
-4. **Optional: Additional optimization** [0/50 marks]
 
-    Find and describe some new optimization that could potentially improve the performance of the OpenMP advection solver. Implement and evaluate this on Gadi. Put your code in `run_parallel_omp_advection_with_extra_opts()`, which is activated by the `-x` option.
 
 ## Part 2: CUDA
 
 Unless otherwise specified, experimental results for this section should be made on `stugpu2.anu.edu.au`, as described in [Lab 7](https://gitlab.cecs.anu.edu.au/comp4300/2024/comp4300-lab6). *Please note that this is a shared resource and choose your parameters so that the advection time is about 1 second or smaller: this should be plenty long enough to demonstrate performance!* Click [here](https://comp.anu.edu.au/courses/comp4300/assignments_workflow/#access-and-usage-of-stugpu2anueduau-gpu-programming-with-cuda) for `stugpu2.anu.edu.au` access instructions. 
 
-Tasks 5. and 6. below are mandatory. Tasks 7. and 8. are optional (see description for Tasks 3. and 4. above for the implications of this).
 
-5. **Baseline GPU Implementation** [15/50 marks]
+
+5. **Baseline GPU Implementation**
 
    Using the code of `run_serial_advection_device()` and its kernels in `serAdvect.cu` as a starting point, implement a solver whose field update kernels operate on $`Gx \times Gy`$ thread blocks of size $`Bx \times By`$ (without restrictions, except you may assume $`Bx*By \leq`$ the maximum thread block size). You may choose what, if any, parallelization strategy you apply for the boundary updates (justify this in your report).
 
@@ -109,26 +106,7 @@ Tasks 5. and 6. below are mandatory. Tasks 7. and 8. are optional (see descripti
 
     Perform suitable experiments to determine the overhead of a kernel invocation, and report your findings. Include also some experiments to determine speedups against the single GPU and host (x86-64) cores (but do not use much smaller parameters, as a single GPU core is very, very, slow...).
 
-6. **Optimized GPU Implementation** [10/50 marks]
+6. **Optimized GPU Implementation**
     
     In `run_parallel_cuda_advection_optimized()`, create an optimized solver and its associated kernels. It should be (in principle) significantly faster than the previous version. You might have ideas of what optimizations you might consider from Assignment 1; if not, read the paper [<span style="color:blue">Optimized Three-Dimensional Stencil Computation on Fermi and Kepler GPUs</span>](Opt3Dstencils.pdf) by Vizitiu et al. Please note that the architecture used in this paper is different from the GPUs you will use on stugpu2 and Gadi. In your report, describe your optimization(s) and their rationale. Perform suitable experiments which should demonstrate the efficacy of your approach, and discuss them in your report.
 
-7. **Optional: Comparison of the Programming Models** [0/50 marks]
-   
-    Based on your experiences in this course, comment on the programmability (relative ease of designing, implementing and debugging programs) in the three paradigms you have used so far: OpenMP (shared memory), CUDA (streaming device programming) and MPI (distributed memory). Compare this with the speedups obtained.
-
-8. **Optional: GPU Performance Comparison** [0/50 marks]
-
-    Port your codes to the Gadi GPUs, and perform some experiments to compare your results with those on stugpu2 (*warning:* the batch queues for the GPU nodes are known for their long wait times!). 
-    Any code changes should *not* go in your submitted version of `parAdvect.cu`; instead, describe these with words.
-
-## Requirements
-
-Your code must be written using C/OpenMP or Cuda, as appropriate. Your code will be tested against the standard `serAdvect` and `testAdvect` files and must compile and run correctly with them. Solutions which are highly incompatible may be rejected entirely. The exact given field update calculation, as specified in `update_advection_field()` in `serAdvect.c`, must be used in all cases - others will be rejected. You code should be written with good programming style. It should be well commented, so as to enable the reader (this includes the tutor/marker!) to understand how it works.
-
-In your report, include:
-
-* A disclaimer with your name and student number stating what (if any) contributions from others (not including course staff) are in your submission. Note that significant contributions may require a revision of your final mark, as this is intended to be an individual assignment.
-* Your answers to all the questions given above.
-* Details of any notable deficiencies, bugs, or issues with your work.
-* Any feedback on what you found helpful in doing this work, or what from the course could be improved in helping you to carry out this work.
