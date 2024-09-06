@@ -124,6 +124,7 @@ void update_advection_kernel(int M, int N, double *u, int ldu, double *v, int ld
 
 __global__
 void update_advection_kernel_optimized(int M, int N, double *u, int ldu, double *v, int ldv, double Ux, double Uy){
+  // 0 1 2 
   // TODO
   double cim1, ci0, cip1;
   double cjm1, cj0, cjp1;
