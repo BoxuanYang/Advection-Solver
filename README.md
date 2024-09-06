@@ -56,9 +56,6 @@ You should read the files and familiarize yourself with what they contain.
 
 Experimentation for this section should be done on the Gadi supercomputer. Results should use a batch job run on a single supercomputer node; see the provided file `batchAdv1Node.sh`. Note that for *p ≤ 24*, it forces all threads on one socket (and allocates memory adjacent to the same socket) - this seems to give the best and most consistent results.
 
-Tasks 1. and 2. below are mandatory. Tasks 3. and 4. are optional, and do not contribute to the marks of the assignment. They won't be marked, and as such, feedback won't be provided on these if they are submitted. 
-You can use these to test your knowledge in preparation for the final exam.  
-
 
 1. **Parallelization via 1D Decomposition and Simple Directives**
 
@@ -71,36 +68,28 @@ You can use these to test your knowledge in preparation for the final exam.
       3. maximize cache misses involving read operations (without significantly increasing parallel region entry/exits or cache writes).
       4. maximize cache misses involving write operations (without significantly increasing parallel region entry/exits).
   
-    This exercise tests your knowledge regarding cache line transfers. It requires that you understand the parallel memory access patterns resulting from each combination, and how these are laid out in the cache lines of each of the cores. 
-
     The loops in `omp_update_boundary_1D_decomposition()` can potentially be parallelized as well. Experiment with this for the purpose of improving the performance of case (1) above.
 
-    Cut-and-paste the directive / loop-nesting combinations for each case in your report, and discuss why you chose them. Similarly discuss your strategy in parallelizing the boundary update loops, and whether and by how much it improved the performance of case (1). Choosing suitable values for `M`, `N`,  and `r`, record the performance at various `p` and put the results in your report, discussing the differences.
-
-    Now, leave the best performing parallelization combination in your file.
+    
 
 2. **Parallelization via 2D Decomposition and an Extended Parallel Region** 
 
-    In the function `run_parallel_omp_advection_2D_decomposition()`, write an advection solver such there is only a single parallel region (over all timesteps), and the parallelization is over a `P` by `Q` block distribution. *Hint:* each thread could call `update_advection_field()` and `copy_field()` over its respective sub-array; alternately you could 'inline' these functions and restrict the `i,j` loops to operate on the thread's sub-array.
-
-    For suitable measurements with the best-performing `p` from Q1 and varying `P`, compare performance. Discuss whether there is any gain from the 2D distribution. Comparing this with the 1D vs 2D case for the MPI version of the solver, and explain any differences with the relative advantages. Comparing with your results in Q1 for the `P=p` case, was there any advantage in having a single parallel region?
-
-
+    In the function `run_parallel_omp_advection_2D_decomposition()`, we wrote an advection solver such there is only a single parallel region (over all timesteps), and the parallelization is over a `P` by `Q` block distribution. *Hint:* each thread could call `update_advection_field()` and `copy_field()` over its respective sub-array; alternately you could 'inline' these functions and restrict the `i,j` loops to operate on the thread's sub-array.
 
 
 
 
 ## Part 2: CUDA
 
-Unless otherwise specified, experimental results for this section should be made on `stugpu2.anu.edu.au`, as described in [Lab 7](https://gitlab.cecs.anu.edu.au/comp4300/2024/comp4300-lab6). *Please note that this is a shared resource and choose your parameters so that the advection time is about 1 second or smaller: this should be plenty long enough to demonstrate performance!* Click [here](https://comp.anu.edu.au/courses/comp4300/assignments_workflow/#access-and-usage-of-stugpu2anueduau-gpu-programming-with-cuda) for `stugpu2.anu.edu.au` access instructions. 
+Experiments of this part is done within student GPU resources of ANU.
 
 
 
 5. **Baseline GPU Implementation**
 
-   Using the code of `run_serial_advection_device()` and its kernels in `serAdvect.cu` as a starting point, implement a solver whose field update kernels operate on $`Gx \times Gy`$ thread blocks of size $`Bx \times By`$ (without restrictions, except you may assume $`Bx*By \leq`$ the maximum thread block size). You may choose what, if any, parallelization strategy you apply for the boundary updates (justify this in your report).
+   We used the code of `run_serial_advection_device()` and its kernels in `serAdvect.cu` as a starting point, implement a solver whose field update kernels operate on $`Gx \times Gy`$ thread blocks of size $`Bx \times By`$ (without restrictions, except you may assume $`Bx*By \leq`$ the maximum thread block size). You may choose what, if any, parallelization strategy you apply for the boundary updates (justify this in your report).
 
-   In `parAdvect.cu`, you will need to create new kernel functions, and your outer-level solver calling these must be implemented in `run_parallel_cuda_advection_2D_decomposition()`. *Hint:* to help in debugging, replace the kernels from `serAdvect.cu` one by one with your own, and do the simpler parallelizations first.
+   
 
     Perform experiments to determine the effects of varying `Gx,Gy,Bx,By` (given some reasonably sized problem to solve). Report and discuss the optimal combination, and any results of interest (including a comparison of $`1 \times B`$ vs $`B \times 1`$ blocks).
 
